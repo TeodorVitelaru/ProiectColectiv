@@ -1,0 +1,14 @@
+# Build results
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+
+# Visual Studio
+.vs/
+.vscode/
+*.dbmdl
