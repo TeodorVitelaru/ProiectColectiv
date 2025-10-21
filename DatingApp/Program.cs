@@ -122,7 +122,8 @@ builder.Services.AddAuthorization();
 
 // -------------------- DbContext --------------------
 builder.Services.AddDbContext<ProiectColectivContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    b => b.MigrationsAssembly("DatingApp.Data")));
 
 // -------------------- Validators --------------------
 builder.Services.AddScoped<IValidationFactory, ValidationFactory>();
