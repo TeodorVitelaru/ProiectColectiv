@@ -460,19 +460,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\VTT\\.nuget\\packages\\": {}
+    "C:\\Users\\TeodorVitelaru\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Proiect Colectiv\\DatingApp\\DatingApp.csproj",
+      "projectUniqueName": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
       "projectName": "DatingApp",
-      "projectPath": "E:\\Proiect Colectiv\\DatingApp\\DatingApp.csproj",
-      "packagesPath": "C:\\Users\\VTT\\.nuget\\packages\\",
-      "outputPath": "E:\\Proiect Colectiv\\DatingApp\\obj\\",
+      "projectPath": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
+      "packagesPath": "C:\\Users\\TeodorVitelaru\\.nuget\\packages\\",
+      "outputPath": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\VTT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\TeodorVitelaru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -492,7 +497,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net7.0": {
@@ -518,6 +529,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -526,7 +555,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }
