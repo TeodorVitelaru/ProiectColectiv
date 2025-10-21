@@ -62,12 +62,11 @@ namespace DatingApp.Service
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_key));
             SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
-            Claim[] claims = new Claim[]
-            {
-                new Claim("userId", user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("isAdmin", user.IsAdmin.ToString())
-            };
+            Claim[] claims = [
+                new("userId", user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new("role", user.IsAdmin ? "Admin" : "User"),
+            ];
 
             JwtSecurityToken token = new(_issuer,
               _issuer,
