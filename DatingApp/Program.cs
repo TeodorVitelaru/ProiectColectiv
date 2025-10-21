@@ -8,6 +8,7 @@ using DatingApp.Repo;
 using DatingApp.Service;
 using DatingApp.Service.HelperService;
 using DatingApp.Validators;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -105,13 +106,19 @@ builder.Services.AddDbContext<ProiectColectivContext>(options =>
 // -------------------- Validators --------------------
 builder.Services.AddScoped<IValidationFactory, ValidationFactory>();
 builder.Services.AddScoped<IRequestValidator, RequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<JwtOptions>>().Value);
 builder.Services.AddScoped<ILoginService, LoginService>();
 
-// -------------------- Services --------------------
+// -------------------- Helper Services --------------------
 builder.Services.AddScoped<IPasswordHasherService, PasswordHelperService>();
+builder.Services.AddScoped<IAuthorizationHelperService, AuthorizationHelperService>();
+
+// -------------------- Services --------------------
 builder.Services.AddScoped<IUserService, UserService>();
 
 // -------------------- Repositories / Persistence --------------------

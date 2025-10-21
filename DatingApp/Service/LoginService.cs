@@ -87,11 +87,11 @@ namespace DatingApp.Service
         /// <exception cref="BadRequestException">If <paramref name="password"/> not valid.</exception>
         private async Task<User> AuthenticateUserCredentials(string email, string password)
         {
-            User? user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Email == email, u => u.IsAdmin);
+            User? user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
             {
-                throw new Exception("User with provided email does not exist.");
+                throw new NotFoundException("User with provided email does not exist.");
             }
 
             bool correctPassword = _passwordHasherService.CheckPasswordMatch(password, user.Password);
