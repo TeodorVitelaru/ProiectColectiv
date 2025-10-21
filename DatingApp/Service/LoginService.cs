@@ -33,8 +33,8 @@ namespace DatingApp.Service
             _passwordHasherService = passwordHasherService;
             _mapper = mapper;
 
-            _issuer = Environment.GetEnvironmentVariable("APP_BASE_URL") ?? options.Issuer!;
-            _key = Environment.GetEnvironmentVariable("LOGIN_TOKEN_KEY") ?? options.Key!;
+            _issuer = Environment.GetEnvironmentVariable("APP_BASE_URL_PROIECT") ?? options.Issuer!;
+            _key = Environment.GetEnvironmentVariable("LOGIN_TOKEN_KEY_PROIECTa") ?? options.Key!;
             _defaultDuration = int.Parse(Environment.GetEnvironmentVariable("JWT_DEFAULT_DURATION") ?? options.DefaultDuration!);
         }
 

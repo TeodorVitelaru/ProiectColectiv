@@ -4,6 +4,7 @@ using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Contracts.Validators;
 using DatingApp.Data;
 using DatingApp.Dtos.User.Login;
+using DatingApp.Middlewares;
 using DatingApp.Repo;
 using DatingApp.Service;
 using DatingApp.Service.HelperService;
@@ -13,8 +14,10 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,14 +76,18 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Introduceți tokenul JWT"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
             },
-            Array.Empty<string>()
+            new string[] {}
         }
     });
 });
@@ -89,12 +96,26 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHealthChecks();
 
 // -------------------- Authentication --------------------
+// --- JWT Configuration from Environment Variables ---
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "http://localhost:5098";
+var jwtKey = Environment.GetEnvironmentVariable("LOGIN_TOKEN_KEY_PROIECT") ?? "super_secret_key_123456789asdasdasdasd";
+var jwtDuration = Environment.GetEnvironmentVariable("JWT_DEFAULT_DURATION") ?? "60"; // fallback 60 min
+var jwtDurationMinutes = int.Parse(jwtDuration);
+
+// --- Authentication ---
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Jwt:Authority"];
-        options.Audience = builder.Configuration["Jwt:Audience"];
-        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ClockSkew = TimeSpan.Zero
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -149,6 +170,7 @@ app.UseCors(corsPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<ApplicationExceptionHandler>();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
