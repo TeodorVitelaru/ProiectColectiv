@@ -55,12 +55,5 @@ namespace DatingApp.Contracts.Persistence
         /// </summary>
         /// <param name="entities">Collection of <typeparamref name="TEntity"/> entities to remove.</param>
         void RemoveRange(IEnumerable<TEntity> entities);
-
-        /// <summary>
-        /// Asynchronously imediatelly (by one SQL command) deletes entity instances which match <paramref name="predicate"/>.
-        /// If <paramref name="predicate"/> is not provided, delete all entities.
-        /// </summary>
-        /// <param name="predicate">A function to test each entity for a condition to be deleted.</param>
-        Task BulkDeleteAsync(Expression<Func<TEntity, bool>>? predicate = default);
     }
 }

@@ -1,17 +1,19 @@
-﻿using DatingApp.Contracts.Services.HelperService;
+﻿using DatingApp.Contracts.Services;
+using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Contracts.Validators;
+using DatingApp.Contracts.Persistence;
 using DatingApp.Domain.Entities;
 using DatingApp.Dtos.User.Login;
 using DatingApp.Exceptions;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 
 namespace DatingApp.Service
 {
-    public class LoginService
+    public class LoginService : ILoginService
     {
         private readonly ILogger<LoginService> _logger;
         private readonly IUnitOfWork _unitOfWork;
@@ -30,7 +32,7 @@ namespace DatingApp.Service
             _requestValidator = requestValidator;
             _passwordHasherService = passwordHasherService;
             _mapper = mapper;
-\
+
             _issuer = Environment.GetEnvironmentVariable("APP_BASE_URL") ?? options.Issuer!;
             _key = Environment.GetEnvironmentVariable("LOGIN_TOKEN_KEY") ?? options.Key!;
             _defaultDuration = int.Parse(Environment.GetEnvironmentVariable("JWT_DEFAULT_DURATION") ?? options.DefaultDuration!);
@@ -86,7 +88,7 @@ namespace DatingApp.Service
         /// <exception cref="BadRequestException">If <paramref name="password"/> not valid.</exception>
         private async Task<User> AuthenticateUserCredentials(string email, string password)
         {
-            User? user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Email.Value == email, u => u.Role);
+            User? user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Email == email, u => u.IsAdmin);
 
             if (user == null)
             {

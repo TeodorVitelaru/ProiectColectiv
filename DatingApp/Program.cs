@@ -1,12 +1,20 @@
-﻿using DatingApp.Dtos.User.Login;
+﻿using DatingApp.Contracts.Persistence;
+using DatingApp.Contracts.Services;
+using DatingApp.Contracts.Services.HelperService;
+using DatingApp.Contracts.Validators;
+using DatingApp.Data;
+using DatingApp.Dtos.User.Login;
+using DatingApp.Repo;
+using DatingApp.Service;
+using DatingApp.Service.HelperService;
+using DatingApp.Validators;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text.Json.Serialization;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Options;
-using DatingApp.Contracts.Services;
-using DatingApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,31 +57,71 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "DatingApp API",
-        Version = "v1",
-        Description = "Example API documentation"
+        Version = "1.0.0",
+        Description = "API documentation",
+    });
+
+    // JWT Bearer Authentication în Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Introduceți tokenul JWT"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 
 // -------------------- Health Checks --------------------
 builder.Services.AddHealthChecks();
 
-// -------------------- Authentication & Authorization --------------------
+// -------------------- Authentication --------------------
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = builder.Configuration["Jwt:Authority"];
-        options.RequireHttpsMetadata = false;
         options.Audience = builder.Configuration["Jwt:Audience"];
+        options.RequireHttpsMetadata = false;
     });
 
 builder.Services.AddAuthorization();
 
-// -------------------- LoginService --------------------
+// -------------------- DbContext --------------------
+builder.Services.AddDbContext<ProiectColectivContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// -------------------- Validators --------------------
+builder.Services.AddScoped<IValidationFactory, ValidationFactory>();
+builder.Services.AddScoped<IRequestValidator, RequestValidator>();
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<JwtOptions>>().Value);
 builder.Services.AddScoped<ILoginService, LoginService>();
 
-// -------------------- Build app --------------------
+// -------------------- Services --------------------
+builder.Services.AddScoped<IPasswordHasherService, PasswordHelperService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// -------------------- Repositories / Persistence --------------------
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// -------------------- AutoMapper --------------------
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// -------------------- Build App --------------------
 var app = builder.Build();
 
 // -------------------- Middleware --------------------
@@ -98,7 +146,14 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health");
 
-// -------------------- Run --------------------
+// -------------------- Apply Migrations Automatically --------------------
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ProiectColectivContext>();
+    context.Database.Migrate();
+}
+
+// -------------------- Run App --------------------
 try
 {
     Log.Information("Starting the API...");
