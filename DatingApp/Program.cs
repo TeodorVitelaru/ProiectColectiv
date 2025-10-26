@@ -122,8 +122,8 @@ builder.Services.AddAuthorization();
 
 // -------------------- DbContext --------------------
 builder.Services.AddDbContext<ProiectColectivContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-    b => b.MigrationsAssembly("DatingApp.Data")));
+ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+ b => b.MigrationsAssembly(typeof(ProiectColectivContext).Assembly.GetName().Name)));
 
 // -------------------- Validators --------------------
 builder.Services.AddScoped<IValidationFactory, ValidationFactory>();
@@ -180,7 +180,17 @@ app.MapHealthChecks("/health");
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ProiectColectivContext>();
-    context.Database.Migrate();
+    try
+    {
+        var conn = context.Database.GetDbConnection();
+        Log.Information("Applying migrations with DataSource={DataSource}, Database={Database}", conn.DataSource, conn.Database);
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Automatic migrations failed. DataSource={DataSource}", context.Database.GetDbConnection()?.DataSource);
+        throw;
+    }
 }
 
 // -------------------- Run App --------------------

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Reflection.Emit;
+using DatingApp.Domain.Entities;
 
 namespace DatingApp.Data
 {
@@ -9,6 +10,8 @@ namespace DatingApp.Data
         public ProiectColectivContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
