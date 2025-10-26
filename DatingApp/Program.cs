@@ -142,6 +142,7 @@ builder.Services.AddScoped<IAuthorizationHelperService, AuthorizationHelperServi
 
 // -------------------- Services --------------------
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 // -------------------- Repositories / Persistence --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -177,21 +178,21 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 // -------------------- Apply Migrations Automatically --------------------
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ProiectColectivContext>();
-    try
-    {
-        var conn = context.Database.GetDbConnection();
-        Log.Information("Applying migrations with DataSource={DataSource}, Database={Database}", conn.DataSource, conn.Database);
-        context.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Log.Error(ex, "Automatic migrations failed. DataSource={DataSource}", context.Database.GetDbConnection()?.DataSource);
-        throw;
-    }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ProiectColectivContext>();
+//    try
+//    {
+//        var conn = context.Database.GetDbConnection();
+//        Log.Information("Applying migrations with DataSource={DataSource}, Database={Database}", conn.DataSource, conn.Database);
+//        context.Database.Migrate();
+//    }
+//    catch (Exception ex)
+//    {
+//        Log.Error(ex, "Automatic migrations failed. DataSource={DataSource}", context.Database.GetDbConnection()?.DataSource);
+//        throw;
+//    }
+//}
 
 // -------------------- Run App --------------------
 try
