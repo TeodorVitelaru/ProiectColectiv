@@ -19,9 +19,12 @@ namespace DatingApp.Repo
             _context = context;
             _connection = _context.Database.GetDbConnection();
             UserRepository = new UserRepository(context);
+            MessageRepository = new MessageRepository(context);
         }
 
         public IUserRepository UserRepository { get; }
+
+        public IMessageRepository MessageRepository { get; }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)
         {

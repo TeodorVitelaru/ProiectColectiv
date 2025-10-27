@@ -6,6 +6,8 @@ namespace DatingApp.Contracts.Persistence
     {
         IUserRepository UserRepository { get; }
 
+        IMessageRepository MessageRepository { get; }
+
         /// <summary>
         /// Saves the changes to database asynchronously.
         /// </summary>
