@@ -10,11 +10,11 @@ namespace DatingApp.Controllers;
 [Produces("application/json")]
 public class ReviewController : ControllerBase
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<ReviewController> _logger;
     private readonly IReviewService _reviewService;
     private readonly IMapper _mapper;
 
-    public ReviewController(ILogger logger, IReviewService reviewService, IMapper mapper)
+    public ReviewController(ILogger<ReviewController> logger, IReviewService reviewService, IMapper mapper)
     {
         _logger = logger;
         _reviewService = reviewService;

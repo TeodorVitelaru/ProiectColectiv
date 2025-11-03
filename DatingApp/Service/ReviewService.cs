@@ -33,7 +33,7 @@ public class ReviewService : IReviewService
 
         if (!reviews.Any())
         {
-            throw new NotFoundException("There are no users");
+            throw new NotFoundException("There are no reviews");
         }
 
         return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
@@ -57,7 +57,6 @@ public class ReviewService : IReviewService
         _requestValidator.Validate(request);
 
         // validate users exist
-
         var reviewer = await _unitOfWork.UserRepository.GetByIdAsync(request.ReviewerId);
         if (reviewer == null)
             throw new NotFoundException("Reviewer", request.ReviewerId);
@@ -66,12 +65,12 @@ public class ReviewService : IReviewService
         if (reviewee == null)
             throw new NotFoundException("Reviewee", request.RevieweeId);
 
-        var review = await _unitOfWork.ReviewRepository.AddAsync(Review.Create(request.ReviewerId, request.RevieweeId,
-            request.Rating, request.Comment));
+        var review = Review.Create(request.ReviewerId, request.RevieweeId, request.Rating, request.Comment);
 
+        var addedReview = await _unitOfWork.ReviewRepository.AddAsync(review);
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<ReviewDto>(review);
+        return _mapper.Map<ReviewDto>(addedReview);
     }
 
     public async Task<ReviewDto> EditReviewAsync(EditReviewRequest request)
