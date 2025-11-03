@@ -3,6 +3,7 @@ using DatingApp.Domain.Entities;
 using DatingApp.Dtos.User;
 using DatingApp.Dtos.Message;
 using DatingApp.Dtos.Review;
+using DatingApp.Dtos.Report;
 
 namespace DatingApp.Mapper
 {
@@ -32,6 +33,12 @@ namespace DatingApp.Mapper
                 .ForMember(x => x.RevieweeId, y => y.MapFrom(z => z.RevieweeId))
                 .ForMember(x => x.Rating, y => y.MapFrom(z => z.Rating))
                 .ForMember(x => x.Comment, y => y.MapFrom(z => z.Comment));
+
+            CreateMap<Report, ReportDto>()
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
+                .ForMember(x => x.ReporterId, y => y.MapFrom(z => z.ReporterId))
+                .ForMember(x => x.ReportedUserId, y => y.MapFrom(z => z.ReportedUserId))
+                .ForMember(x => x.Reason, y => y.MapFrom(z => z.Reason));
         }
     }
 }
