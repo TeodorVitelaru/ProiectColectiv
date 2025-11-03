@@ -16,7 +16,7 @@ public class Review : Entity<long>
     {
     }
 
-    protected Review()
+    protected Review() : base()
     {
     }
 
