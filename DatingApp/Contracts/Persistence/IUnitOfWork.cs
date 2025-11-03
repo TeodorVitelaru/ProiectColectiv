@@ -8,6 +8,8 @@ namespace DatingApp.Contracts.Persistence
 
         IMessageRepository MessageRepository { get; }
 
+        IReviewRepository ReviewRepository { get; }
+
         /// <summary>
         /// Saves the changes to database asynchronously.
         /// </summary>
