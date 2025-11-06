@@ -4,9 +4,13 @@ namespace DatingApp.Domain.Entities
 {
  public class Message : Entity<long>
  {
- public long UserId1 { get; private set; }
+ public long SenderId { get; private set; }
 
- public long UserId2 { get; private set; }
+ public User Sender { get; private set; }
+
+ public long RecipientId { get; private set; }
+
+ public User Recipient { get; private set; }
 
  public string Text { get; private set; }
 
@@ -14,15 +18,15 @@ namespace DatingApp.Domain.Entities
 
  protected Message() : base() { }
 
- public static Message Create(long userId1, long userId2, string text)
+ public static Message Create(long senderId, long recipientId, string text)
  {
  if (string.IsNullOrWhiteSpace(text))
  throw new ArgumentException("Text cannot be empty.", nameof(text));
 
  return new Message()
  {
- UserId1 = userId1,
- UserId2 = userId2,
+ SenderId = senderId,
+ RecipientId = recipientId,
  Text = text
  };
  }
@@ -34,5 +38,7 @@ namespace DatingApp.Domain.Entities
 
  Text = text;
  }
+
+ public bool IsSender(long userId) => SenderId == userId;
  }
 }

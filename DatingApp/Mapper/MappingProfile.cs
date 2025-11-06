@@ -21,8 +21,8 @@ namespace DatingApp.Mapper
 
             CreateMap<Message, MessageDto>()
            .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-           .ForMember(x => x.UserId1, y => y.MapFrom(z => z.UserId1))
-           .ForMember(x => x.UserId2, y => y.MapFrom(z => z.UserId2))
+           .ForMember(x => x.SenderId, y => y.MapFrom(z => z.SenderId))
+           .ForMember(x => x.RecipientId, y => y.MapFrom(z => z.RecipientId))
            .ForMember(x => x.Text, y => y.MapFrom(z => z.Text));
         }
     }
