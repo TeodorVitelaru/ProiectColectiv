@@ -3,6 +3,7 @@ using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.Data.Migrations
 {
     [DbContext(typeof(ProiectColectivContext))]
-    partial class ProiectColectivContextModelSnapshot : ModelSnapshot
+    [Migration("20251106153503_RenameMessageSenderRecipient")]
+    partial class RenameMessageSenderRecipient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,58 +52,6 @@ namespace DatingApp.Data.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages", (string)null);
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.Review", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<long>("RevieweeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ReviewerId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reviews", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_Reviews_Rating_Range", "Rating BETWEEN 1 AND 5");
-                        });
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.Report", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ReportedUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ReporterId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("DatingApp.Domain.Entities.User", b =>

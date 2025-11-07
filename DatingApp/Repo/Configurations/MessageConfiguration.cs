@@ -10,15 +10,31 @@ namespace DatingApp.Repo.Configurations
  {
  builder.ToTable("Messages");
 
- builder.Property(m => m.UserId1)
- .IsRequired();
+ builder.HasKey(m => m.Id);
 
- builder.Property(m => m.UserId2)
- .IsRequired();
+ builder.Property(m => m.SenderId)
+ .IsRequired()
+ .HasColumnName("UserId1");
+
+ builder.Property(m => m.RecipientId)
+ .IsRequired()
+ .HasColumnName("UserId2");
 
  builder.Property(m => m.Text)
  .IsRequired()
  .HasMaxLength(1000);
+
+ // Relationship: Sender (User) -> SentMessages (if exists)
+ builder.HasOne(m => m.Sender)
+ .WithMany()
+ .HasForeignKey(m => m.SenderId)
+ .OnDelete(DeleteBehavior.Restrict);
+
+ // Relationship: Recipient (User) -> ReceivedMessages (if exists)
+ builder.HasOne(m => m.Recipient)
+ .WithMany()
+ .HasForeignKey(m => m.RecipientId)
+ .OnDelete(DeleteBehavior.Restrict);
  }
  }
 }

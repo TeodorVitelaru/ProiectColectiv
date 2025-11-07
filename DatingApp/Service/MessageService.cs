@@ -5,6 +5,7 @@ using DatingApp.Contracts.Validators;
 using DatingApp.Dtos.Message;
 using DatingApp.Domain.Entities;
 using DatingApp.Exceptions;
+using System.Linq;
 
 namespace DatingApp.Service
 {
@@ -30,12 +31,12 @@ namespace DatingApp.Service
             _requestValidator.Validate(request);
 
             // validate users exist
-            var user1 = await _unitOfWork.UserRepository.GetByIdAsync(request.UserId1);
-            if (user1 == null) throw new NotFoundException("User", request.UserId1);
-            var user2 = await _unitOfWork.UserRepository.GetByIdAsync(request.UserId2);
-            if (user2 == null) throw new NotFoundException("User", request.UserId2);
+            var sender = await _unitOfWork.UserRepository.GetByIdAsync(request.SenderId);
+            if (sender == null) throw new NotFoundException("User", request.SenderId);
+            var recipient = await _unitOfWork.UserRepository.GetByIdAsync(request.RecipientId);
+            if (recipient == null) throw new NotFoundException("User", request.RecipientId);
 
-            var message = await _unitOfWork.MessageRepository.AddAsync(Message.Create(request.UserId1, request.UserId2, request.Text));
+            var message = await _unitOfWork.MessageRepository.AddAsync(Message.Create(request.SenderId, request.RecipientId, request.Text));
             await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<MessageDto>(message);
@@ -43,13 +44,15 @@ namespace DatingApp.Service
 
         public async Task<IEnumerable<MessageDto>> GetAllMessagesAsync()
         {
-            var messages = await _unitOfWork.MessageRepository.GetAllAsync();
+            // include sender and recipient
+            var messages = await _unitOfWork.MessageRepository.FindAsync(m => true, m => m.Sender, m => m.Recipient);
             return messages.Select(m => _mapper.Map<MessageDto>(m));
         }
 
         public async Task<MessageDto> GetMessageAsync(long id)
         {
-            var msg = await _unitOfWork.MessageRepository.GetByIdAsync(id) ?? throw new NotFoundException("Message", id);
+            var msg = await _unitOfWork.MessageRepository.FindFirstOrDefaultAsync(m => m.Id == id, m => m.Sender, m => m.Recipient)
+                ?? throw new NotFoundException("Message", id);
             return _mapper.Map<MessageDto>(msg);
         }
 

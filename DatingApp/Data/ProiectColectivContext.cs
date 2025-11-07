@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Reflection.Emit;
 using DatingApp.Domain.Entities;
 
 namespace DatingApp.Data
@@ -12,6 +11,7 @@ namespace DatingApp.Data
         }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Report> Reports { get; set; }
 
