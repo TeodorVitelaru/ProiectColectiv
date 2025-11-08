@@ -11,6 +11,7 @@ namespace DatingApp.Contracts.Persistence
         IReviewRepository ReviewRepository { get; }
 
         IReportRepository ReportRepository { get; }
+        IImageRepository ImageRepository { get; }
 
         /// <summary>
         /// Saves the changes to database asynchronously.
