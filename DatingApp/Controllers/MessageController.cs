@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DatingApp.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/messages")]
     [Produces("application/json")]
     public class MessageController : ControllerBase
     {
@@ -66,6 +66,15 @@ namespace DatingApp.Controllers
             await _messageService.DeleteMessageAsync(new DeleteMessageRequest { Id = id });
             return NoContent();
         }
-    
+
+        [HttpGet("users/{firstUserId}/users/{secondUserId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetMessagesBetween2UsersAsync([FromQuery] long firstUserId, [FromQuery] long secondUserId)
+        {
+            await _messageService.DeleteMessageAsync(new DeleteMessageRequest { Id = id });
+            return NoContent();
+        }
+
     }
 }
