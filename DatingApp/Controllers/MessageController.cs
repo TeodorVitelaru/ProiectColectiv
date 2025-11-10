@@ -70,10 +70,13 @@ namespace DatingApp.Controllers
         [HttpGet("users/{firstUserId}/users/{secondUserId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetMessagesBetween2UsersAsync([FromQuery] long firstUserId, [FromQuery] long secondUserId)
+        public async Task<IEnumerable<MessageDto>> GetMessagesBetween2UsersAsync(long firstUserId, long secondUserId)
         {
-            await _messageService.DeleteMessageAsync(new DeleteMessageRequest { Id = id });
-            return NoContent();
+            IEnumerable<MessageDto> messages = await _messageService
+                .GetAllMessagesBetween2Users(new GetMessagesBetween2UsersRequest
+                { FirstUserId = firstUserId, SecondUserId = secondUserId });
+
+            return messages;
         }
 
     }
