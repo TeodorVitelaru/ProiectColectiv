@@ -1,14 +1,47 @@
-# Build results
-bin/
-obj/
-out/
-*.exe
-*.dll
-*.pdb
-*.cache
-*.log
+# IDE
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Visual Studio
+# Rider
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
 .vs/
 .vscode/
-*.dbmdl
+
+# NuGet Packages
+*.nupkg
+packages/
+
+# Copilot
+copilot.data.migration.*
+betterCommentsSettings.xml
+encodings.xml
+indexLayout.xml
+Project_Default.xml
+vcs.xml
+
+# Project files
+*.csproj.nuget.*
+project.assets.json
+project.nuget.cache
