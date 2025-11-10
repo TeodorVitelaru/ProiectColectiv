@@ -9,6 +9,6 @@ namespace DatingApp.Contracts.Services
         Task<MessageDto> GetMessageAsync (long id);
         Task<MessageDto> EditMessageAsync (EditMessageRequest request);
         Task DeleteMessageAsync (DeleteMessageRequest request);
-        Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users (GetMessagesBetween2UsersRequest request)
+        Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users(GetMessagesBetween2UsersRequest request);
     }
 }

@@ -71,5 +71,29 @@ namespace DatingApp.Service
             _unitOfWork.MessageRepository.Remove(existing);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users(GetMessagesBetween2UsersRequest request)
+        {
+            _logger.LogTrace("Get messages between 2 users called.");
+
+            _requestValidator.Validate(request);
+
+            User firstUser = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Id == request.FirstUserId)
+                ?? throw new NotFoundException(nameof(User), request.FirstUserId);
+
+            User secondUser = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Id == request.SecondUserId)
+                ?? throw new NotFoundException(nameof(User), request.SecondUserId);
+
+            IEnumerable<Message> messagesBetweenUsers = await _unitOfWork.MessageRepository
+                .FindAsync(m => (m.SenderId == firstUser.Id && m.RecipientId == secondUser.Id) ||
+                    (m.SenderId == secondUser.Id && m.RecipientId == firstUser.Id));
+
+            if (!messagesBetweenUsers.Any())
+            {
+                throw new NotFoundException("There are no messages.");
+            }
+
+            return _mapper.Map<IEnumerable<MessageDto>>(messagesBetweenUsers);
+        }
     }
 }
