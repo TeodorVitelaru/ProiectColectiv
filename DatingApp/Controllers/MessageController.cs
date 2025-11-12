@@ -1,6 +1,8 @@
 using AutoMapper;
 using DatingApp.Contracts.Services;
+using DatingApp.Dtos.Common;
 using DatingApp.Dtos.Message;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Controllers
@@ -78,6 +80,29 @@ namespace DatingApp.Controllers
 
             return messages;
         }
+
+        [HttpGet("users/{senderId}/users/{recipientId}/paginated")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
+        public async Task<ActionResult<PagedResponse<MessageDto>>> GetPaginatedBetweenUsersAsync(
+            long senderId,
+            long recipientId,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = await _messageService.GetPaginatedMessagesBetWeen2UsersAsync(
+                new GetPaginatedMessagesBetween2UsersRequest
+                {
+                    SenderId = senderId,
+                    RecipientId = recipientId,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                });
+
+            return Ok(result);
+        }
+
 
     }
 }
