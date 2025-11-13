@@ -1,3 +1,4 @@
+using DatingApp.Dtos.Common;
 using DatingApp.Dtos.Message;
 
 namespace DatingApp.Contracts.Services
@@ -10,5 +11,7 @@ namespace DatingApp.Contracts.Services
         Task<MessageDto> EditMessageAsync (EditMessageRequest request);
         Task DeleteMessageAsync (DeleteMessageRequest request);
         Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users(GetMessagesBetween2UsersRequest request);
+
+        Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(GetPaginatedMessagesBetween2UsersRequest request);
     }
 }
