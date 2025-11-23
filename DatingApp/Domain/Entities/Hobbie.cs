@@ -10,6 +10,8 @@ namespace DatingApp.Domain.Entities
 
         protected Hobbie() : base() { }
 
+        public ICollection<User> Users { get; private set; } = new List<User>();
+
         public static Hobbie Create(string hobbieName)
         {
             Hobbie hobbie = new()
@@ -18,6 +20,11 @@ namespace DatingApp.Domain.Entities
             };
 
             return hobbie;
+        }
+
+        public void UpdateHobbieName(string hobbieName)
+        {
+            HobbieName = HobbieName;
         }
     }
 }

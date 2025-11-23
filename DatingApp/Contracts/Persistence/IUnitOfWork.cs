@@ -12,6 +12,8 @@ namespace DatingApp.Contracts.Persistence
 
         IReportRepository ReportRepository { get; }
 
+        IHobbieRepository HobbieRepository { get; }
+
         /// <summary>
         /// Saves the changes to database asynchronously.
         /// </summary>
