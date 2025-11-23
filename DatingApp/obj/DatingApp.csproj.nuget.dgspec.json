@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj": {}
+    "E:\\ProiectColectiv\\DatingApp\\DatingApp.csproj": {}
   },
   "projects": {
-    "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj": {
+    "E:\\ProiectColectiv\\DatingApp\\DatingApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
+        "projectUniqueName": "E:\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
         "projectName": "DatingApp",
-        "projectPath": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
-        "packagesPath": "C:\\Users\\TeodorVitelaru\\.nuget\\packages\\",
-        "outputPath": "C:\\Proiect Colectiv\\ProiectColectiv\\DatingApp\\obj\\",
+        "projectPath": "E:\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
+        "packagesPath": "C:\\Users\\VTT\\.nuget\\packages\\",
+        "outputPath": "E:\\ProiectColectiv\\DatingApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\TeodorVitelaru\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VTT\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -132,7 +132,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
