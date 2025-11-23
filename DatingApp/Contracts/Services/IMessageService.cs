@@ -12,6 +12,6 @@ namespace DatingApp.Contracts.Services
         Task DeleteMessageAsync (DeleteMessageRequest request);
         Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users(GetMessagesBetween2UsersRequest request);
 
-        Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(GetPaginatedMessagesBetween2UsersRequest request);
+        Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(int senderId, long recipientId, GetPaginatedMessagesBetween2UsersRequest request);
     }
 }

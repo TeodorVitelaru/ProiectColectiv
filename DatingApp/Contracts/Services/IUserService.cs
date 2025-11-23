@@ -38,5 +38,12 @@ namespace DatingApp.Contracts.Services
         /// </summary>
         /// <exception cref="NotFoundException">Thrown when <see cref="UserDto"/> is not found.</exception>
         Task DeleteUserAsync(DeleteUserRequest request);
+
+        /// <summary>
+        /// Asynchronously gets a random <see cref="UserDto"/> object.
+        /// If no <see cref="UserDto"/> is found, throws <see cref="NotFoundException"/>
+        /// </summary>
+        /// <exception cref="NotFoundException">Thrown when no <see cref="UserDto"/> is found.</exception>
+        Task<UserDto> GetRandomUserAsync(int currentUserId);
     }
 }

@@ -116,5 +116,23 @@ namespace DatingApp.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Asynchronously gets a random <see cref="UserDto"/> object.
+        /// </summary>
+        [HttpGet("random")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> GetRandomUserAsync()
+        {
+            _logger.LogTrace("Get random user called");
+
+            var currentUserId = _authorizationHelperService.GetCurrentUserId(HttpContext);
+
+            UserDto response = await _userService.GetRandomUserAsync(currentUserId);
+
+            return response;
+        }
     }
 }
