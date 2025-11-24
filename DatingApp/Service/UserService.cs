@@ -121,5 +121,14 @@ namespace DatingApp.Service
 
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task<UserDto> GetRandomUserAsync(int currentUserId)
+        {
+            _logger.LogTrace("Get random user called");
+
+            User user = await _unitOfWork.UserRepository.GetRandomUserAsync(currentUserId) ?? throw new NotFoundException("No users found");
+
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

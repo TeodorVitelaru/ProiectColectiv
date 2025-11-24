@@ -44,5 +44,14 @@ namespace DatingApp.Service.HelperService
             }
         }
 
+        public int GetCurrentUserId(HttpContext httpContext)
+        {
+            var userIdClaim = httpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            throw new UnauthorizedAccessException("User ID not found in token.");
+        }
     }
 }

@@ -2,43 +2,50 @@ using DatingApp.Domain.Primitives;
 
 namespace DatingApp.Domain.Entities
 {
- public class Message : Entity<long>
- {
- public long SenderId { get; private set; }
+    public class Message : Entity<long>
+    {
+        public long SenderId { get; private set; }
 
- public User Sender { get; private set; }
+        public User Sender { get; private set; }
 
- public long RecipientId { get; private set; }
+        public long RecipientId { get; private set; }
 
- public User Recipient { get; private set; }
+        public User Recipient { get; private set; }
 
- public string Text { get; private set; }
+        public string Text { get; private set; }
 
- protected Message(long id) : base(id) { }
+        public DateTime SentAt { get; private set; }
 
- protected Message() : base() { }
+        protected Message(long id) : base(id)
+        {
+        }
 
- public static Message Create(long senderId, long recipientId, string text)
- {
- if (string.IsNullOrWhiteSpace(text))
- throw new ArgumentException("Text cannot be empty.", nameof(text));
+        protected Message() : base()
+        {
+        }
 
- return new Message()
- {
- SenderId = senderId,
- RecipientId = recipientId,
- Text = text
- };
- }
+        public static Message Create(long senderId, long recipientId, string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentException("Text cannot be empty.", nameof(text));
 
- public void UpdateText(string text)
- {
- if (string.IsNullOrWhiteSpace(text))
- throw new ArgumentException("Text cannot be empty.", nameof(text));
+            return new Message()
+            {
+                SenderId = senderId,
+                RecipientId = recipientId,
+                Text = text,
+                SentAt = DateTime.UtcNow
+            };
+        }
 
- Text = text;
- }
+        public void UpdateText(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentException("Text cannot be empty.", nameof(text));
 
- public bool IsSender(long userId) => SenderId == userId;
- }
+            Text = text;
+        }
+
+        public bool IsSender(long userId) => SenderId == userId;
+    }
 }

@@ -13,5 +13,12 @@ namespace DatingApp.Contracts.Services.HelperService
         /// <param name="claims">Information about logged in user.</param>
         /// <param name="id">Identifier from request.</param>
         Task<bool> IsUserAllowedToExecuteMethod(IEnumerable<Claim> claims, long id);
+
+        /// <summary>
+        /// Gets the current user's ID from the HttpContext.
+        /// </summary>
+        /// <param name="httpContext">The HttpContext.</param>
+        /// <returns>The current user's ID.</returns>
+        int GetCurrentUserId(HttpContext httpContext);
     }
 }
