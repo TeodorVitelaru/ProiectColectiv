@@ -2,7 +2,7 @@
 {
     public class NotFoundException : Exception
     {
-        public NotFoundException()
+        public NotFoundException(long id)
         {
         }
 

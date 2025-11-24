@@ -22,6 +22,7 @@ namespace DatingApp.Repo
             MessageRepository = new MessageRepository(context);
             ReviewRepository = new ReviewRepository(context);
             ReportRepository = new ReportRepository(context);
+            ImageRepository = new ImageRepository(context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -31,6 +32,7 @@ namespace DatingApp.Repo
         public IReviewRepository ReviewRepository { get; }
 
         public IReportRepository ReportRepository { get; }
+        public IImageRepository ImageRepository { get; }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)
         {
