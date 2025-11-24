@@ -4,6 +4,7 @@ using DatingApp.Dtos.User;
 using DatingApp.Dtos.Message;
 using DatingApp.Dtos.Review;
 using DatingApp.Dtos.Report;
+using DatingApp.Dtos.Hobbie;
 
 namespace DatingApp.Mapper
 {
@@ -19,7 +20,8 @@ namespace DatingApp.Mapper
                 .ForMember(x => x.LastName, y => y.MapFrom(z => z.LastName))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email))
                 .ForMember(x => x.Password, y => y.MapFrom(z => z.Password))
-                .ForMember(x => x.IsAdmin, y => y.MapFrom(z => z.IsAdmin));
+                .ForMember(x => x.IsAdmin, y => y.MapFrom(z => z.IsAdmin))
+                .ForMember(x => x.Hobbies, y => y.MapFrom(z => z.Hobbies));
 
             CreateMap<Message, MessageDto>()
                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
@@ -39,6 +41,9 @@ namespace DatingApp.Mapper
                 .ForMember(x => x.ReporterId, y => y.MapFrom(z => z.ReporterId))
                 .ForMember(x => x.ReportedUserId, y => y.MapFrom(z => z.ReportedUserId))
                 .ForMember(x => x.Reason, y => y.MapFrom(z => z.Reason));
+
+            CreateMap<Hobbie, HobbieDto>()
+                .ForMember(x => x.HobbieName, y => y.MapFrom(z => z.HobbieName));
         }
     }
 }

@@ -28,6 +28,11 @@ namespace DatingApp.Repo.Configurations
 
             builder.Property(u => u.IsAdmin)
                 .IsRequired();
+
+            builder
+                .HasMany(u => u.Hobbies)
+                .WithMany(h => h.Users)
+                .UsingEntity(j => j.ToTable("UserHobbies"));
         }
     }
 }

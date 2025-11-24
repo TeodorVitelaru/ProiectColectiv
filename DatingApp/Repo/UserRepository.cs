@@ -45,5 +45,15 @@ namespace DatingApp.Repo
 
             return randomUser;
         }
+
+        public async Task<User?> GetUserWithAllHobbies(long userId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Hobbies)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
     }
 }

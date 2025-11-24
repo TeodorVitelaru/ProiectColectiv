@@ -14,6 +14,8 @@ namespace DatingApp.Domain.Entities
 
         public bool IsAdmin { get; private set; }
 
+        public ICollection<Hobbie> Hobbies { get; private set; }
+
         protected User(long id) : base(id) { }
 
         protected User() : base() { }

@@ -1,4 +1,6 @@
-﻿namespace DatingApp.Dtos.User
+﻿using DatingApp.Dtos.Hobbie;
+
+namespace DatingApp.Dtos.User
 {
     /// <summary>
     /// DTO used for user data.
@@ -34,5 +36,7 @@
         /// User is admin.
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        public ICollection<HobbieDto> Hobbies { get; set; } = new List<HobbieDto>();
     }
 }

@@ -32,3 +32,16 @@ bld/
 # NuGet Packages
 *.nupkg
 packages/
+
+# Copilot
+copilot.data.migration.*
+betterCommentsSettings.xml
+encodings.xml
+indexLayout.xml
+Project_Default.xml
+vcs.xml
+
+# Project files
+*.csproj.nuget.*
+project.assets.json
+project.nuget.cache
