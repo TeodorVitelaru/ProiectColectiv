@@ -5866,23 +5866,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\daria\\.nuget\\packages\\": {},
+    "C:\\Users\\Acasa\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\cata\\DatingApp\\DatingApp.csproj",
+      "projectUniqueName": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\DatingApp.csproj",
       "projectName": "DatingApp",
-      "projectPath": "C:\\cata\\DatingApp\\DatingApp.csproj",
-      "packagesPath": "C:\\Users\\daria\\.nuget\\packages\\",
-      "outputPath": "C:\\cata\\DatingApp\\obj\\",
+      "projectPath": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\DatingApp.csproj",
+      "packagesPath": "C:\\Users\\Acasa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\daria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Acasa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

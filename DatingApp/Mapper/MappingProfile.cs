@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using DatingApp.Domain.Entities;
-using DatingApp.Dtos.User;
+using DatingApp.Dtos.Match;
 using DatingApp.Dtos.Message;
-using DatingApp.Dtos.Review;
 using DatingApp.Dtos.Report;
+using DatingApp.Dtos.Review;
+using DatingApp.Dtos.User;
 
 namespace DatingApp.Mapper
 {
@@ -39,6 +40,13 @@ namespace DatingApp.Mapper
                 .ForMember(x => x.ReporterId, y => y.MapFrom(z => z.ReporterId))
                 .ForMember(x => x.ReportedUserId, y => y.MapFrom(z => z.ReportedUserId))
                 .ForMember(x => x.Reason, y => y.MapFrom(z => z.Reason));
+
+            CreateMap<Match, MatchDto>()
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
+                .ForMember(x => x.UserId1, y => y.MapFrom(z => z.UserId1))
+                .ForMember(x => x.UserId2, y => y.MapFrom(z => z.UserId2))
+                .ForMember(x => x.MatchDate, y => y.MapFrom(z => z.MatchDate));
+
         }
     }
 }

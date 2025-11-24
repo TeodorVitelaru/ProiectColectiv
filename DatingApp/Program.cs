@@ -144,11 +144,13 @@ builder.Services.AddScoped<IAuthorizationHelperService, AuthorizationHelperServi
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 
 // -------------------- Repositories / Persistence --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
 // -------------------- AutoMapper --------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
