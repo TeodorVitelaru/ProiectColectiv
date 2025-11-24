@@ -5,10 +5,11 @@ namespace DatingApp.Domain.Entities
     public class Image : Entity<long>
     {
         public byte[] image { get; set; }
+        public long userId {  get; set; }
 
-        public static Image Create(byte[] image)
+        public static Image Create(byte[] image,long userId)
         {
-           return new Image() { image = image };
+           return new Image() { image = image, userId = userId };
         }
 
 

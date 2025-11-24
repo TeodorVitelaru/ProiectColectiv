@@ -36,7 +36,7 @@ namespace DatingApp.Service
             //try
             //{
                 Image image = await _unitOfWork.ImageRepository.AddAsync(Image.Create(
-                Convert.FromBase64String(request.Image)));
+                Convert.FromBase64String(request.Image), request.userId));
 
                 await _unitOfWork.SaveChangesAsync();
 
@@ -74,6 +74,25 @@ namespace DatingApp.Service
                 throw new NotFoundException("There are no images");
             }
 
+            return _mapper.Map<IEnumerable<ImageDto>>(images);
+        }
+
+        public async Task<IEnumerable<ImageDto>> GetAllImagesByUserIdAsync(GetImageRequest request)
+        {
+            _logger.LogTrace("Get all images of user called");
+
+            User user = await _unitOfWork.UserRepository.GetByIdAsync(request.Id);
+            if (user == null)
+            {
+                throw new NotFoundException("There is no such user");
+            }
+
+            IEnumerable<Image> images = await _unitOfWork.ImageRepository.
+                FindAsync(i => (i.userId == request.Id));
+            if (!images.Any())
+            {
+                throw new NotFoundException("There are no images");
+            }
             return _mapper.Map<IEnumerable<ImageDto>>(images);
         }
 

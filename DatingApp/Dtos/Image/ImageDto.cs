@@ -4,6 +4,8 @@
     {
         public long Id { get; set; }
 
+        public long userId { get; set; }
+
         public string ImageBase64 { get; set; }
     }
 }

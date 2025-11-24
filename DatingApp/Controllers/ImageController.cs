@@ -29,12 +29,23 @@ namespace DatingApp.Controllers
             return Ok(images);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<ImageDto>>> GetAllByUserId(long id)
+        {
+            var images = await _imageService.GetAllImagesByUserIdAsync(new GetImageRequest { Id = id });
+            if (images == null || !images.Any()) return NotFound();
+            return Ok(images);
+        }
+
+        [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(long id)
         {
             var dto = await _imageService.GetImageAsync(new GetImageRequest{Id = id});
+            if (dto == null) return NotFound();
             return Ok(dto);
         }
 

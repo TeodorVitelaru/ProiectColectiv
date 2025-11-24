@@ -3,6 +3,7 @@ using DatingApp.Data;
 using DatingApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Runtime.CompilerServices;
 
 
 namespace DatingApp.Repo    
@@ -17,5 +18,13 @@ namespace DatingApp.Repo
         }
 
         public IDbConnection GetDbConnection() => _context.Database.GetDbConnection();
+
+        public async Task<List<Image>> GetImagesByUserIdAsync(long userId)
+        {
+            return await _context.Set<Image>()
+                .AsNoTracking()
+                .Where(i => i.userId == userId)
+                .ToListAsync();
+        }
     }
 }

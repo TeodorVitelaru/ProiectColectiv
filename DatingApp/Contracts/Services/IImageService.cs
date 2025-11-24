@@ -12,6 +12,6 @@ namespace DatingApp.Contracts.Services
 
         Task<IEnumerable<ImageDto>> GetAllImagesAsync();
 
-
+        Task<IEnumerable<ImageDto>> GetAllImagesByUserIdAsync(GetImageRequest request);
     }
 }

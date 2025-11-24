@@ -43,6 +43,7 @@ namespace DatingApp.Mapper
 
             CreateMap<Image, ImageDto>()
                  .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                 .ForMember(dest => dest.userId, opt => opt.MapFrom(src => src.userId))
                  .ForMember(dest => dest.ImageBase64, opt => opt.MapFrom(src =>
                      src.image != null ? Convert.ToBase64String(src.image) : null));
 
