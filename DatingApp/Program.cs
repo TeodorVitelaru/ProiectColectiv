@@ -150,6 +150,7 @@ builder.Services.AddScoped<IHobbieService, HobbieService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IHobbieRepository,  HobbieRepository>();
 
 // -------------------- AutoMapper --------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
