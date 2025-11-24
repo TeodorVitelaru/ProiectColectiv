@@ -144,6 +144,7 @@ builder.Services.AddScoped<IAuthorizationHelperService, AuthorizationHelperServi
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IHobbieService, HobbieService>();
 
 // -------------------- Repositories / Persistence --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
