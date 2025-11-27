@@ -2,6 +2,7 @@ using AutoMapper;
 using DatingApp.Contracts.Services;
 using DatingApp.Dtos.Common;
 using DatingApp.Dtos.Message;
+using DatingApp.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -103,6 +104,21 @@ namespace DatingApp.Controllers
             return Ok(result);
         }
 
+        [HttpGet("users/{userId}/conversations")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersWithMessagesAsync(long userId)
+        {
+            var result = await _messageService.GetUsersWithMessagesAsync(
+                new GetUsersWithMessagesRequest { UserId = userId });
+
+            if (result == null || !result.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
 
     }
 }

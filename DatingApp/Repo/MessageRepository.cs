@@ -2,6 +2,7 @@ using DatingApp.Contracts.Persistence;
 using DatingApp.Domain.Entities;
 using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 
 namespace DatingApp.Repo
@@ -38,6 +39,24 @@ namespace DatingApp.Repo
                 .ToListAsync();
 
             return (messages, totalCount);
+        }
+
+        public async Task<IReadOnlyList<User>> GetUsersWithMessagesForAsync(long userId)
+        {
+            var partnerIds = await _context.Messages
+                .Where(m => m.SenderId == userId || m.RecipientId == userId)
+                .Select(m => m.SenderId == userId ? m.RecipientId : m.SenderId)
+                .Distinct()
+                .ToListAsync();
+
+            if (!partnerIds.Any())
+            {
+                return Array.Empty<User>();
+            }
+
+            return await _context.Users
+                .Where(u => partnerIds.Contains(u.Id))
+                .ToListAsync();
         }
     }
 }

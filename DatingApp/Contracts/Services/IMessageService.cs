@@ -1,5 +1,6 @@
 using DatingApp.Dtos.Common;
 using DatingApp.Dtos.Message;
+using DatingApp.Dtos.User;
 
 namespace DatingApp.Contracts.Services
 {
@@ -13,5 +14,7 @@ namespace DatingApp.Contracts.Services
         Task<IEnumerable<MessageDto>> GetAllMessagesBetween2Users(GetMessagesBetween2UsersRequest request);
 
         Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(GetPaginatedMessagesBetween2UsersRequest request);
+
+        Task<IEnumerable<UserDto>> GetUsersWithMessagesAsync(GetUsersWithMessagesRequest request);
     }
 }

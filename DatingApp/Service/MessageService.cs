@@ -3,6 +3,7 @@ using DatingApp.Contracts.Persistence;
 using DatingApp.Contracts.Services;
 using DatingApp.Contracts.Validators;
 using DatingApp.Dtos.Message;
+using DatingApp.Dtos.User;
 using DatingApp.Domain.Entities;
 using DatingApp.Exceptions;
 using System.Linq;
@@ -125,6 +126,25 @@ namespace DatingApp.Service
                 , totalCount
                 , request.PageNumber
                 , request.PageSize);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersWithMessagesAsync(GetUsersWithMessagesRequest request)
+        {
+            _logger.LogTrace("Get users with messages called.");
+
+            _requestValidator.Validate(request);
+
+            _ = await _unitOfWork.UserRepository.GetByIdAsync(request.UserId)
+                ?? throw new NotFoundException(nameof(User), request.UserId);
+
+            var users = await _unitOfWork.MessageRepository.GetUsersWithMessagesForAsync(request.UserId);
+
+            if (users == null || !users.Any())
+            {
+                throw new NotFoundException("There are no users with messages for the provided user.");
+            }
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
     }
 }
