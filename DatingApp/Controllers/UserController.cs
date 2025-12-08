@@ -1,4 +1,4 @@
-﻿using DatingApp.Contracts.Services;
+﻿﻿using DatingApp.Contracts.Services;
 using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
@@ -79,6 +79,24 @@ namespace DatingApp.Controllers
         }
 
         /// <summary>
+        /// Asynchronously registers a new user with complete profile for provided <paramref name="request"/>.
+        /// </summary>
+        [HttpPost("register")]
+        [AllowAnonymous]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<UserDto>> RegisterUserAsync([FromForm] RegisterUserRequest request)
+        {
+            _logger.LogTrace("Register user called");
+
+            UserDto response = await _userService.RegisterUserAsync(request);
+
+            return response;
+        }
+
+        /// <summary>
         /// Asynchronously updates <see cref="UserDto"/> object for provided <paramref name="userId"/> and <paramref name="request"/>.
         /// </summary>
         [HttpPut("{userId}")]
@@ -133,6 +151,37 @@ namespace DatingApp.Controllers
             UserDto response = await _userService.GetRandomUserAsync(currentUserId);
 
             return response;
+        }
+
+        /// <summary>
+        /// Asynchronously sets up user profile with all information including photos.
+        /// </summary>
+        [HttpPut("{userId}/setup-profile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
+        public async Task<ActionResult<SetupProfileResponse>> SetupProfileAsync(long userId, [FromForm] SetupProfileRequest request)
+        {
+            _logger.LogTrace($"Setup profile for user {userId} called");
+
+            // Verify that the authenticated user is updating their own profile
+            var currentUserId = _authorizationHelperService.GetCurrentUserId(HttpContext);
+            if (currentUserId != userId)
+            {
+                return Unauthorized("You can only update your own profile");
+            }
+
+            // Validate the request
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            SetupProfileResponse response = await _userService.SetupProfileAsync(userId, request);
+
+            return Ok(response);
         }
     }
 }

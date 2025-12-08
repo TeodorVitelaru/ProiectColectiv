@@ -1,18 +1,25 @@
 ﻿using DatingApp.Domain.Primitives;
-using static System.Net.Mime.MediaTypeNames;
+
 namespace DatingApp.Domain.Entities
 {
     public class Image : Entity<long>
     {
-        public byte[] image { get; set; }
-        public long userId {  get; set; }
+        public byte[] ImageData { get; private set; } = null!;
+        public long UserId { get; private set; }
+        public User User { get; private set; } = null!;
 
-        public static Image Create(byte[] image,long userId)
+
+        protected Image(long id) : base(id) { }
+        protected Image() { }
+
+        public static Image Create(byte[] imageData, long userId)
         {
-           return new Image() { image = image, userId = userId };
+            return new Image() 
+            { 
+                ImageData = imageData, 
+                UserId = userId 
+            };
         }
-
-
     }
 
 }

@@ -6020,23 +6020,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Acasa\\.nuget\\packages\\": {},
+    "C:\\Users\\emicu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\DatingApp.csproj",
+      "projectUniqueName": "D:\\GithubRepositories\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
       "projectName": "DatingApp",
-      "projectPath": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\DatingApp.csproj",
-      "packagesPath": "C:\\Users\\Acasa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Acasa\\source\\repos\\ProiectColectiv\\PC\\DatingApp\\obj\\",
+      "projectPath": "D:\\GithubRepositories\\ProiectColectiv\\DatingApp\\DatingApp.csproj",
+      "packagesPath": "C:\\Users\\emicu\\.nuget\\packages\\",
+      "outputPath": "D:\\GithubRepositories\\ProiectColectiv\\DatingApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Acasa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\emicu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -6063,7 +6063,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -6155,7 +6155,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

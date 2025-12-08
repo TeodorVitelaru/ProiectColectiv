@@ -4,9 +4,7 @@ using DatingApp.Contracts.Services;
 using DatingApp.Contracts.Validators;
 using DatingApp.Domain.Entities;
 using DatingApp.Dtos.Image;
-using DatingApp.Dtos.User;
 using DatingApp.Exceptions;
-using Microsoft.AspNetCore.Components.Sections;
 
 namespace DatingApp.Service
 {
@@ -36,7 +34,7 @@ namespace DatingApp.Service
             //try
             //{
                 Image image = await _unitOfWork.ImageRepository.AddAsync(Image.Create(
-                Convert.FromBase64String(request.Image), request.userId));
+                Convert.FromBase64String(request.Image), request.UserId));
 
                 await _unitOfWork.SaveChangesAsync();
 
@@ -46,7 +44,7 @@ namespace DatingApp.Service
             //{
             //    return null;
             //}
-            
+
         }
 
         public async Task DeleteImageAsync(DeleteImageRequest request)
@@ -81,14 +79,13 @@ namespace DatingApp.Service
         {
             _logger.LogTrace("Get all images of user called");
 
-            User user = await _unitOfWork.UserRepository.GetByIdAsync(request.Id);
+            User? user = await _unitOfWork.UserRepository.GetByIdAsync(request.Id);
             if (user == null)
             {
                 throw new NotFoundException("There is no such user");
             }
 
-            IEnumerable<Image> images = await _unitOfWork.ImageRepository.
-                FindAsync(i => (i.userId == request.Id));
+            List<Image> images = await _unitOfWork.ImageRepository.GetImagesByUserIdAsync(request.Id);
             if (!images.Any())
             {
                 throw new NotFoundException("There are no images");
