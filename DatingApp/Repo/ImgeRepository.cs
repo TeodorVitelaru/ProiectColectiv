@@ -1,4 +1,4 @@
-﻿using DatingApp.Contracts.Persistence;
+﻿﻿using DatingApp.Contracts.Persistence;
 using DatingApp.Data;
 using DatingApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ namespace DatingApp.Repo
         {
             return await _context.Set<Image>()
                 .AsNoTracking()
-                .Where(i => i.userId == userId)
+                .Where(i => i.UserId == userId)
                 .ToListAsync();
         }
     }

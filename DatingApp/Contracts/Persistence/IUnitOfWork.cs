@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿﻿using System.Data;
 
 namespace DatingApp.Contracts.Persistence
 {
@@ -11,7 +11,12 @@ namespace DatingApp.Contracts.Persistence
         IReviewRepository ReviewRepository { get; }
 
         IReportRepository ReportRepository { get; }
+        
         IImageRepository ImageRepository { get; }
+
+        IUserLanguageRepository UserLanguageRepository { get; }
+
+        IUserInterestRepository UserInterestRepository { get; }
 
         /// <summary>
         /// Saves the changes to database asynchronously.

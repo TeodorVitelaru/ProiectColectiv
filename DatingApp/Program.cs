@@ -1,4 +1,4 @@
-﻿using DatingApp.Contracts.Persistence;
+﻿﻿using DatingApp.Contracts.Persistence;
 using DatingApp.Contracts.Services;
 using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Contracts.Validators;
@@ -145,12 +145,17 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 // -------------------- Repositories / Persistence --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IUserLanguageRepository, UserLanguageRepository>();
+builder.Services.AddScoped<IUserInterestRepository, UserInterestRepository>();
 
 // -------------------- AutoMapper --------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -172,6 +177,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // Enable serving static files from wwwroot
 app.UseCors(corsPolicy);
 
 app.UseAuthentication();

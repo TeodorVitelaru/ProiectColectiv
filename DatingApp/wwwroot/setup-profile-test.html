@@ -1,0 +1,830 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Setup Profile & Imagini - Dating App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e94057 0%, #f27121 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .section h2 {
+            color: #e94057;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #e94057;
+            box-shadow: 0 0 0 3px rgba(233, 64, 87, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .checkbox-label:hover {
+            border-color: #e94057;
+            background: #fff5f7;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + span {
+            color: #e94057;
+            font-weight: 600;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+        }
+
+        input[type="file"]:hover {
+            border-color: #e94057;
+            background: #fff5f7;
+        }
+
+        .photo-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .photo-preview-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .photo-preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e94057;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e94057 0%, #f27121 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 64, 87, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        button:disabled {
+            background: #ccc !important;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .response-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .response-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .json-display {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💕 Dating App - Test Setup Profile</h1>
+            <p>Testare completă pentru înregistrare utilizator + încărcare imagini</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <strong>📌 Instrucțiuni de testare:</strong>
+                <ul>
+                    <li>Completează toate câmpurile obligatorii (*)</li>
+                    <li>Încarcă minim 2 imagini (maxim 6)</li>
+                    <li>Selectează cel puțin o limbă și un interes</li>
+                    <li>Verifică răspunsul API-ului în secțiunea de jos</li>
+                </ul>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <form id="setupProfileForm">
+                <!-- Secțiunea 1: Informații Bază -->
+                <div class="section">
+                    <h2>👤 Step 1: Informații de Bază</h2>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="firstName">Prenume *</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="Ex: Ion">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Nume *</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Ex: Popescu">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="ion.popescu@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Parolă * (minim 6 caractere)</label>
+                        <input type="password" id="password" name="password" minlength="6" required placeholder="Minim 6 caractere" autocomplete="new-password">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="age">Vârstă * (18-100)</label>
+                            <input type="number" id="age" name="age" min="18" max="100" value="25" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="height">Înălțime (cm) * (100-250)</label>
+                            <input type="number" id="height" name="height" min="100" max="250" value="175" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="gender">Gen *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Selectează...</option>
+                                <option value="0">Bărbat</option>
+                                <option value="1">Femeie</option>
+                                <option value="2">Non-binar</option>
+                                <option value="3">Prefer să nu spun</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Oraș *</label>
+                            <input type="text" id="location" name="location" required placeholder="Ex: București">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Limbi vorbite * (selectează cel puțin 1)</label>
+                        <div class="checkbox-group" id="languagesGroup">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="0">
+                                <span>🇬🇧 Engleză</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="1">
+                                <span>🇷🇴 Română</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="2">
+                                <span>🇪🇸 Spaniolă</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="3">
+                                <span>🇫🇷 Franceză</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="4">
+                                <span>🇩🇪 Germană</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="languages" value="5">
+                                <span>🇮🇹 Italiană</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secțiunea 2: Fotografii -->
+                <div class="section">
+                    <h2>📸 Step 2: Fotografii (minim 2, maxim 6)</h2>
+
+                    <div class="form-group">
+                        <label for="photos">Încarcă fotografii * (JPG, PNG, max 5MB fiecare)</label>
+                        <input type="file" id="photos" name="photos" accept="image/jpeg,image/png,image/jpg" multiple>
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            Selectează între 2 și 6 imagini
+                        </small>
+                    </div>
+
+                    <div id="photoPreview" class="photo-preview"></div>
+                </div>
+
+                <!-- Secțiunea 3: Interese & Bio -->
+                <div class="section">
+                    <h2>🎯 Step 3: Interese & Despre Tine</h2>
+
+                    <div class="form-group">
+                        <label>Interese / Hobby-uri * (1-5 selecții)</label>
+                        <div class="checkbox-group" id="hobbiesGroup">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="0">
+                                <span>🏋️ Fitness</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="1">
+                                <span>✈️ Călătorii</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="2">
+                                <span>🎮 Gaming</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="3">
+                                <span>🍳 Gătit</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="4">
+                                <span>🎵 Muzică</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="5">
+                                <span>🥾 Drumeții</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="6">
+                                <span>🎨 Artă</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="7">
+                                <span>💻 Tehnologie</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="8">
+                                <span>🎬 Filme</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hobbies" value="9">
+                                <span>🐕 Animale</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Bio / Despre tine * (10-500 caractere)</label>
+                        <textarea id="bio" name="bio" minlength="10" maxlength="500" required placeholder="Descrie-te pe scurt... Ce îți place să faci? Ce cauți?"></textarea>
+                        <small id="bioCount" style="color: #666; display: block; margin-top: 5px;">0 / 500 caractere</small>
+                    </div>
+                </div>
+
+                <!-- Secțiunea 4: Preferințe -->
+                <div class="section">
+                    <h2>⚙️ Step 4: Preferințe</h2>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="sexualOrientation">Orientare Sexuală *</label>
+                            <select id="sexualOrientation" name="sexualOrientation" required>
+                                <option value="">Selectează...</option>
+                                <option value="0">Heterosexual</option>
+                                <option value="1">Homosexual</option>
+                                <option value="2">Bisexual</option>
+                                <option value="3">Pansexual</option>
+                                <option value="4">Asexual</option>
+                                <option value="5">Altele</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="relationshipGoal">Tip Relație Căutată *</label>
+                            <select id="relationshipGoal" name="relationshipGoal" required>
+                                <option value="">Selectează...</option>
+                                <option value="0">Relație serioasă</option>
+                                <option value="1">Casual</option>
+                                <option value="2">Prietenie</option>
+                                <option value="3">Nu sunt sigur</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Interval de vârstă preferat *</label>
+                        <div class="row">
+                            <div>
+                                <input type="number" id="ageRangeMin" name="ageRangeMin" min="18" max="100" value="22" required placeholder="Minim">
+                            </div>
+                            <div>
+                                <input type="number" id="ageRangeMax" name="ageRangeMax" min="18" max="120" value="35" required placeholder="Maxim">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Butoane -->
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" onclick="resetForm()">🔄 Reset Formular</button>
+                    <button type="submit" class="btn-primary" id="submitBtn">✅ Înregistrează & Încarcă Imagini</button>
+                </div>
+            </form>
+
+            <!-- Secțiune Răspuns -->
+            <div id="responseSection" class="response-section hidden">
+                <h3>📡 Răspuns API</h3>
+                <div id="responseContent" class="json-display"></div>
+            </div>
+
+            <!-- Secțiune Imagini Salvate -->
+            <div id="imagesSection" class="response-section hidden">
+                <h3>🖼️ Imagini Salvate în Baza de Date</h3>
+                <div id="savedImages"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5098/api';
+        let selectedFiles = [];
+
+        // Bio character counter
+        document.getElementById('bio').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('bioCount').textContent = `${count} / 500 caractere`;
+        });
+
+        // Photo preview handler
+        document.getElementById('photos').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            if (files.length < 2) {
+                showAlert('Te rog să selectezi cel puțin 2 imagini', 'error');
+                return;
+            }
+            
+            if (files.length > 6) {
+                showAlert('Maxim 6 imagini permise', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            selectedFiles = files;
+            displayPhotoPreview(files);
+        });
+
+        function displayPhotoPreview(files) {
+            const previewContainer = document.getElementById('photoPreview');
+            previewContainer.innerHTML = '';
+
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'photo-preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview ${index + 1}">
+                        <button type="button" class="remove-btn" onclick="removePhoto(${index})">×</button>
+                    `;
+                    previewContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removePhoto(index) {
+            selectedFiles.splice(index, 1);
+            displayPhotoPreview(selectedFiles);
+            
+            // Update file input
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            document.getElementById('photos').files = dt.files;
+        }
+
+        // Form submission
+        document.getElementById('setupProfileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Se procesează...';
+
+            try {
+                // Validate photos
+                if (selectedFiles.length < 2) {
+                    throw new Error('Te rog să încarci cel puțin 2 imagini');
+                }
+
+                // Validate languages
+                const selectedLanguages = Array.from(document.querySelectorAll('input[name="languages"]:checked'));
+                if (selectedLanguages.length === 0) {
+                    throw new Error('Te rog să selectezi cel puțin o limbă');
+                }
+
+                // Validate hobbies
+                const selectedHobbies = Array.from(document.querySelectorAll('input[name="hobbies"]:checked'));
+                if (selectedHobbies.length === 0 || selectedHobbies.length > 5) {
+                    throw new Error('Te rog să selectezi între 1 și 5 interese');
+                }
+
+                // Build FormData
+                const formData = new FormData();
+                
+                // Basic info
+                formData.append('firstName', document.getElementById('firstName').value);
+                formData.append('lastName', document.getElementById('lastName').value);
+                formData.append('email', document.getElementById('email').value);
+                formData.append('password', document.getElementById('password').value);
+                formData.append('age', document.getElementById('age').value);
+                formData.append('height', document.getElementById('height').value);
+                formData.append('gender', document.getElementById('gender').value);
+                formData.append('location', document.getElementById('location').value);
+
+                // Languages (array)
+                selectedLanguages.forEach(checkbox => {
+                    formData.append('languages', checkbox.value);
+                });
+
+                // Photos
+                selectedFiles.forEach(file => {
+                    formData.append('photos', file);
+                });
+
+                // Hobbies (array)
+                selectedHobbies.forEach(checkbox => {
+                    formData.append('hobbies', checkbox.value);
+                });
+
+                // Bio
+                formData.append('bio', document.getElementById('bio').value);
+
+                // Preferences
+                formData.append('sexualOrientation', document.getElementById('sexualOrientation').value);
+                formData.append('relationshipGoal', document.getElementById('relationshipGoal').value);
+                formData.append('ageRangeMin', document.getElementById('ageRangeMin').value);
+                formData.append('ageRangeMax', document.getElementById('ageRangeMax').value);
+
+                // Send request to register endpoint
+                const response = await fetch(`${API_BASE_URL}/users/register`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.errorMessage || data.message || 'Eroare la înregistrare');
+                }
+
+                showAlert('✅ Înregistrare reușită! Utilizator creat cu succes.', 'success');
+                displayResponse(data);
+
+                // Fetch and display saved images
+                if (data.id) {
+                    await fetchUserImages(data.id);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert(`❌ Eroare: ${error.message}`, 'error');
+                displayResponse({ error: error.message });
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✅ Înregistrează & Încarcă Imagini';
+            }
+        });
+
+        async function fetchUserImages(userId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/image/user/${userId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Nu s-au putut încărca imaginile');
+                }
+
+                const images = await response.json();
+                displaySavedImages(images);
+
+            } catch (error) {
+                console.error('Error fetching images:', error);
+                showAlert(`⚠️ Avertisment: ${error.message}`, 'error');
+            }
+        }
+
+        function displaySavedImages(images) {
+            const imagesSection = document.getElementById('imagesSection');
+            const savedImages = document.getElementById('savedImages');
+            
+            imagesSection.classList.remove('hidden');
+
+            if (!images || images.length === 0) {
+                savedImages.innerHTML = '<p style="color: #666;">Nu au fost găsite imagini în baza de date.</p>';
+                return;
+            }
+
+            savedImages.innerHTML = `
+                <div class="photo-preview">
+                    ${images.map((img, index) => `
+                        <div class="photo-preview-item">
+                            <img src="data:image/jpeg;base64,${img.imageData}" alt="User Image ${index + 1}">
+                            <div class="image-info" style="padding: 10px; background: #f8f9fa;">
+                                <p><strong>ID:</strong> ${img.id}</p>
+                                <p><strong>User ID:</strong> ${img.userId}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: #d4edda; border-radius: 5px; color: #155724;">
+                    <strong>✅ Total imagini salvate:</strong> ${images.length}
+                </div>
+            `;
+        }
+
+        function displayResponse(data) {
+            const responseSection = document.getElementById('responseSection');
+            const responseContent = document.getElementById('responseContent');
+            
+            responseSection.classList.remove('hidden');
+            responseContent.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function resetForm() {
+            if (confirm('Sigur vrei să resetezi formularul?')) {
+                document.getElementById('setupProfileForm').reset();
+                document.getElementById('photoPreview').innerHTML = '';
+                document.getElementById('responseSection').classList.add('hidden');
+                document.getElementById('imagesSection').classList.add('hidden');
+                document.getElementById('alertContainer').innerHTML = '';
+                document.getElementById('bioCount').textContent = '0 / 500 caractere';
+                selectedFiles = [];
+            }
+        }
+
+        // Validate age range on change
+        document.getElementById('ageRangeMin').addEventListener('change', validateAgeRange);
+        document.getElementById('ageRangeMax').addEventListener('change', validateAgeRange);
+
+        function validateAgeRange() {
+            const min = parseInt(document.getElementById('ageRangeMin').value);
+            const max = parseInt(document.getElementById('ageRangeMax').value);
+
+            if (min > max) {
+                showAlert('Vârsta minimă nu poate fi mai mare decât vârsta maximă', 'error');
+                document.getElementById('ageRangeMin').value = 22;
+                document.getElementById('ageRangeMax').value = 35;
+            }
+        }
+
+        // Limit hobbies selection to max 5
+        document.getElementById('hobbiesGroup').addEventListener('change', function() {
+            const checked = document.querySelectorAll('input[name="hobbies"]:checked');
+            if (checked.length > 5) {
+                showAlert('Poți selecta maxim 5 interese', 'error');
+                event.target.checked = false;
+            }
+        });
+    </script>
+</body>
+</html>
+
