@@ -1,4 +1,4 @@
-﻿using DatingApp.Contracts.Persistence;
+﻿﻿using DatingApp.Contracts.Persistence;
 using DatingApp.Data;
 using DatingApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +38,9 @@ namespace DatingApp.Repo
             var randomIndex = new Random().Next(0, eligibleUsersCount);
 
             var randomUser = await _context.Users
+                .Include(u => u.UserLanguages)
+                .Include(u => u.UserInterests)
+                .Include(u => u.Images)
                 .Where(u => !usersToExclude.Contains(u.Id))
                 .OrderBy(u => u.Id)
                 .Skip(randomIndex)
