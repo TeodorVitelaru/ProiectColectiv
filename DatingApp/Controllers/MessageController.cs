@@ -1,5 +1,6 @@
 using AutoMapper;
 using DatingApp.Contracts.Services;
+using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Dtos.Common;
 using DatingApp.Dtos.Message;
 using DatingApp.Dtos.User;
@@ -15,11 +16,14 @@ namespace DatingApp.Controllers
     {
         private readonly IMessageService _messageService;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationHelperService _authorizationHelperService;
 
-        public MessageController(IMessageService messageService, IMapper mapper)
+
+        public MessageController(IMessageService messageService, IMapper mapper, IAuthorizationHelperService authorizationHelperService)
         {
             _messageService = messageService;
             _mapper = mapper;
+            _authorizationHelperService = authorizationHelperService;
         }
 
         [HttpGet]
@@ -77,31 +81,23 @@ namespace DatingApp.Controllers
         {
             IEnumerable<MessageDto> messages = await _messageService
                 .GetAllMessagesBetween2Users(new GetMessagesBetween2UsersRequest
-                { FirstUserId = firstUserId, SecondUserId = secondUserId });
+                    { FirstUserId = firstUserId, SecondUserId = secondUserId });
 
             return messages;
         }
 
-        [HttpGet("users/{senderId}/users/{recipientId}/paginated")]
+        [HttpGet("users/{recipientId}/paginated")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize]
-        public async Task<ActionResult<PagedResponse<MessageDto>>> GetPaginatedBetweenUsersAsync(
-            long senderId,
-            long recipientId,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<PagedResponse<MessageDto>>> GetPaginatedMessagesAsync(
+            long recipientId, [FromQuery] GetPaginatedMessagesBetween2UsersRequest request)
         {
-            var result = await _messageService.GetPaginatedMessagesBetWeen2UsersAsync(
-                new GetPaginatedMessagesBetween2UsersRequest
-                {
-                    SenderId = senderId,
-                    RecipientId = recipientId,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                });
+            var senderId = _authorizationHelperService.GetCurrentUserId(HttpContext);
 
-            return Ok(result);
+            var response = await _messageService.GetPaginatedMessagesBetWeen2UsersAsync(senderId, recipientId, request);
+
+            return Ok(response);
         }
 
         [HttpGet("users/{userId}/conversations")]
