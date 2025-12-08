@@ -1,4 +1,4 @@
-﻿using DatingApp.Contracts.Persistence;
+﻿﻿using DatingApp.Contracts.Persistence;
 using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -22,6 +22,9 @@ namespace DatingApp.Repo
             MessageRepository = new MessageRepository(context);
             ReviewRepository = new ReviewRepository(context);
             ReportRepository = new ReportRepository(context);
+            ImageRepository = new ImageRepository(context);
+            UserLanguageRepository = new UserLanguageRepository(context);
+            UserInterestRepository = new UserInterestRepository(context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -31,6 +34,12 @@ namespace DatingApp.Repo
         public IReviewRepository ReviewRepository { get; }
 
         public IReportRepository ReportRepository { get; }
+        
+        public IImageRepository ImageRepository { get; }
+
+        public IUserLanguageRepository UserLanguageRepository { get; }
+
+        public IUserInterestRepository UserInterestRepository { get; }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)
         {

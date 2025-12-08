@@ -4,6 +4,7 @@ using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.Data.Migrations
 {
     [DbContext(typeof(ProiectColectivContext))]
-    partial class ProiectColectivContextModelSnapshot : ModelSnapshot
+    [Migration("20251123204352_M2")]
+    partial class M2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,20 +33,16 @@ namespace DatingApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<byte[]>("ImageData")
+                    b.Property<byte[]>("image")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("image");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("userId");
+                    b.Property<long>("userId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("DatingApp.Domain.Entities.Message", b =>
@@ -139,17 +138,6 @@ namespace DatingApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int?>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Bio")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -159,12 +147,6 @@ namespace DatingApp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Height")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
@@ -179,76 +161,9 @@ namespace DatingApp.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("PreferredAgeMax")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PreferredAgeMin")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RelationshipGoal")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SexualOrientation")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.UserInterest", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Interest")
-                        .HasColumnType("int");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId", "Interest")
-                        .IsUnique();
-
-                    b.ToTable("UserInterests", (string)null);
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.UserLanguage", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Language")
-                        .HasColumnType("int");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId", "Language")
-                        .IsUnique();
-
-                    b.ToTable("UserLanguages", (string)null);
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.Image", b =>
-                {
-                    b.HasOne("DatingApp.Domain.Entities.User", "User")
-                        .WithMany("Images")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DatingApp.Domain.Entities.Message", b =>
@@ -268,37 +183,6 @@ namespace DatingApp.Data.Migrations
                     b.Navigation("Recipient");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.UserInterest", b =>
-                {
-                    b.HasOne("DatingApp.Domain.Entities.User", "User")
-                        .WithMany("UserInterests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.UserLanguage", b =>
-                {
-                    b.HasOne("DatingApp.Domain.Entities.User", "User")
-                        .WithMany("UserLanguages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DatingApp.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Images");
-
-                    b.Navigation("UserInterests");
-
-                    b.Navigation("UserLanguages");
                 });
 #pragma warning restore 612, 618
         }

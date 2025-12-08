@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test - Dating App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #e94057;
+            text-align: center;
+        }
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .step h2 {
+            color: #e94057;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        button {
+            background-color: #e94057;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #d63447;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .error {
+            color: #d63447;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffe6e6;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            color: #28a745;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #d4edda;
+            border-radius: 5px;
+            display: none;
+        }
+        .info {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #1976d2;
+        }
+        .photo-preview {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .photo-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌹 Dating App - Registration Test</h1>
+        
+        <div class="info">
+            <strong>📝 Test Instructions:</strong>
+            <ul>
+                <li>Fill in all required fields</li>
+                <li>Upload at least 2 photos</li>
+                <li>Select 1-5 interests</li>
+                <li>Click "Complete Registration" to test the API</li>
+            </ul>
+        </div>
+
+        <form id="registerForm">
+            <!-- Step 1: Basic Information -->
+            <div class="step">
+                <h2>📋 Step 1: Basic Information</h2>
+                
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password * (min 6 characters)</label>
+                    <input type="password" id="password" name="password" minlength="6" autocomplete="new-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age * (18-100)</label>
+                    <input type="number" id="age" name="age" min="18" max="100" value="25" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Height (cm) * (100-250)</label>
+                    <input type="number" id="height" name="height" min="100" max="250" value="170" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select id="gender" name="gender" required>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                        <option value="2">Non-Binary</option>
+                        <option value="3">Prefer Not to Say</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Languages * (select at least 1)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="language" value="0"> English</label>
+                        <label><input type="checkbox" name="language" value="1"> Romanian</label>
+                        <label><input type="checkbox" name="language" value="2"> Spanish</label>
+                        <label><input type="checkbox" name="language" value="3"> French</label>
+                        <label><input type="checkbox" name="language" value="4"> German</label>
+                        <label><input type="checkbox" name="language" value="5"> Italian</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Photos -->
+            <div class="step">
+                <h2>📸 Step 2: Photos</h2>
+                
+                <div class="form-group">
+                    <label for="photos">Upload Photos * (minimum 2)</label>
+                    <input type="file" id="photos" name="photos" multiple accept="image/*" required>
+                    <div id="photoPreview" class="photo-preview"></div>
+                    <small>Selected: <span id="photoCount">0</span> photo(s)</small>
+                </div>
+            </div>
+
+            <!-- Step 3: Interests & Bio -->
+            <div class="step">
+                <h2>❤️ Step 3: Passions & Interests</h2>
+                
+                <div class="form-group">
+                    <label>Interests * (select 1-5)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="interest" value="0"> 💪 Gym</label>
+                        <label><input type="checkbox" name="interest" value="1"> ✈️ Travel</label>
+                        <label><input type="checkbox" name="interest" value="2"> 🎮 Gaming</label>
+                        <label><input type="checkbox" name="interest" value="3"> 🍳 Cooking</label>
+                        <label><input type="checkbox" name="interest" value="4"> 🎵 Music</label>
+                        <label><input type="checkbox" name="interest" value="5"> 🥾 Hiking</label>
+                        <label><input type="checkbox" name="interest" value="6"> 🎨 Art</label>
+                        <label><input type="checkbox" name="interest" value="7"> 💻 Tech</label>
+                        <label><input type="checkbox" name="interest" value="8"> 🎬 Movies</label>
+                        <label><input type="checkbox" name="interest" value="9"> 🐶 Pets</label>
+                    </div>
+                    <small>Selected: <span id="interestCount">0</span> interest(s)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">About You * (max 500 characters)</label>
+                    <textarea id="bio" name="bio" maxlength="500" required></textarea>
+                    <small><span id="bioCount">0</span>/500 characters</small>
+                </div>
+            </div>
+
+            <!-- Step 4: Preferences -->
+            <div class="step">
+                <h2>⚙️ Step 4: Preferences</h2>
+                
+                <div class="form-group">
+                    <label for="relationshipGoal">Relationship Goal *</label>
+                    <select id="relationshipGoal" name="relationshipGoal" required>
+                        <option value="0">Casual</option>
+                        <option value="1">Serious</option>
+                        <option value="2">Friendship</option>
+                        <option value="3">Not Sure Yet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sexualOrientation">Sexual Orientation *</label>
+                    <select id="sexualOrientation" name="sexualOrientation" required>
+                        <option value="0">Straight</option>
+                        <option value="1">Gay</option>
+                        <option value="2">Lesbian</option>
+                        <option value="3">Bisexual</option>
+                        <option value="4">Pansexual</option>
+                        <option value="5">Asexual</option>
+                        <option value="6">Prefer Not to Say</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Age Range *</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="number" id="preferredAgeMin" name="preferredAgeMin" min="18" max="100" value="22" required style="width: 100px;">
+                        <span>to</span>
+                        <input type="number" id="preferredAgeMax" name="preferredAgeMax" min="18" max="100" value="35" required style="width: 100px;">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">Complete Registration 🚀</button>
+        </form>
+
+        <div id="errorMessage" class="error"></div>
+        <div id="successMessage" class="success"></div>
+    </div>
+
+    <script>
+        // Auto-detect the current host and port
+        const API_URL = `${window.location.protocol}//${window.location.host}/api/users/register`;
+        
+        // Photo preview
+        document.getElementById('photos').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('photoPreview');
+            const count = document.getElementById('photoCount');
+            
+            preview.innerHTML = '';
+            count.textContent = files.length;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Interest counter
+        document.querySelectorAll('input[name="interest"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checked = document.querySelectorAll('input[name="interest"]:checked');
+                document.getElementById('interestCount').textContent = checked.length;
+                
+                // Disable checkboxes if 5 are selected
+                if (checked.length >= 5) {
+                    document.querySelectorAll('input[name="interest"]:not(:checked)').forEach(cb => {
+                        cb.disabled = true;
+                    });
+                } else {
+                    document.querySelectorAll('input[name="interest"]').forEach(cb => {
+                        cb.disabled = false;
+                    });
+                }
+            });
+        });
+
+        // Bio counter
+        document.getElementById('bio').addEventListener('input', function() {
+            document.getElementById('bioCount').textContent = this.value.length;
+        });
+
+        // Convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering... ⏳';
+            
+            try {
+                // Get form data
+                const form = e.target;
+                const photoFiles = document.getElementById('photos').files;
+                
+                // Validate photos
+                if (photoFiles.length < 2) {
+                    throw new Error('Please upload at least 2 photos');
+                }
+                
+                // Convert photos to base64
+                const photosBase64 = await Promise.all(
+                    Array.from(photoFiles).map(file => fileToBase64(file))
+                );
+                
+                // Get selected languages
+                const languages = Array.from(form.querySelectorAll('input[name="language"]:checked'))
+                    .map(checkbox => parseInt(checkbox.value));
+                
+                if (languages.length === 0) {
+                    throw new Error('Please select at least one language');
+                }
+                
+                // Get selected interests
+                const interests = Array.from(form.querySelectorAll('input[name="interest"]:checked'))
+                    .map(checkbox => parseInt(checkbox.value));
+                
+                if (interests.length === 0 || interests.length > 5) {
+                    throw new Error('Please select between 1 and 5 interests');
+                }
+                
+                // Build request data
+                const requestData = {
+                    firstName: form.firstName.value.trim(),
+                    lastName: form.lastName.value.trim(),
+                    email: form.email.value.trim(),
+                    password: form.password.value,
+                    age: parseInt(form.age.value),
+                    height: parseInt(form.height.value),
+                    gender: parseInt(form.gender.value),
+                    city: form.city.value.trim(),
+                    languages: languages,
+                    photosBase64: photosBase64,
+                    interests: interests,
+                    bio: form.bio.value.trim(),
+                    relationshipGoal: parseInt(form.relationshipGoal.value),
+                    sexualOrientation: parseInt(form.sexualOrientation.value),
+                    preferredAgeMin: parseInt(form.preferredAgeMin.value),
+                    preferredAgeMax: parseInt(form.preferredAgeMax.value)
+                };
+                
+                console.log('Sending registration request:', requestData);
+                
+                // Send request
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    let errorMessage = `HTTP error! status: ${response.status}`;
+                    try {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            const error = await response.json();
+                            errorMessage = error.message || errorMessage;
+                        } else {
+                            const textError = await response.text();
+                            errorMessage = textError || errorMessage;
+                        }
+                    } catch (e) {
+                        // If parsing fails, use default error message
+                    }
+                    throw new Error(errorMessage);
+                }
+                
+                const result = await response.json();
+                console.log('Registration successful:', result);
+                
+                successDiv.textContent = `✅ Registration successful! User ID: ${result.id}. Welcome ${result.firstName}!`;
+                successDiv.style.display = 'block';
+                
+                // Reset form
+                form.reset();
+                document.getElementById('photoPreview').innerHTML = '';
+                document.getElementById('photoCount').textContent = '0';
+                document.getElementById('interestCount').textContent = '0';
+                document.getElementById('bioCount').textContent = '0';
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                errorDiv.textContent = `❌ Error: ${error.message}`;
+                errorDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Registration 🚀';
+            }
+        });
+    </script>
+</body>
+</html>
+
