@@ -1,4 +1,5 @@
 using DatingApp.Domain.Entities;
+using System.Collections.Generic;
 
 namespace DatingApp.Contracts.Persistence
 {
@@ -8,5 +9,8 @@ namespace DatingApp.Contracts.Persistence
             long senderId,
             long recipientId,
             int pageNumber,
-            int pageSize);    }
+            int pageSize);
+
+        Task<IReadOnlyList<User>> GetUsersWithMessagesForAsync(long userId);
+    }
 }
