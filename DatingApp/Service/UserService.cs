@@ -188,7 +188,11 @@ namespace DatingApp.Service
         {
             _logger.LogTrace("Get all users called");
 
-            IEnumerable<User> users = await _unitOfWork.UserRepository.GetAllAsync();
+            IEnumerable<User> users = await _unitOfWork.UserRepository.FindAsync(
+                u => true,
+                u => u.UserLanguages,
+                u => u.UserInterests,
+                u => u.Images);
 
             if (!users.Any())
             {
@@ -204,7 +208,11 @@ namespace DatingApp.Service
 
             _requestValidator.Validate(request);
 
-            User user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(u => u.Id == request.Id) ?? throw new NotFoundException(nameof(User), request.Id);
+            User user = await _unitOfWork.UserRepository.FindFirstOrDefaultAsync(
+                u => u.Id == request.Id,
+                u => u.UserLanguages,
+                u => u.UserInterests,
+                u => u.Images) ?? throw new NotFoundException(nameof(User), request.Id);
 
             return _mapper.Map<UserDto>(user);
         }
