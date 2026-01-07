@@ -5,6 +5,7 @@ using DatingApp.Dtos.Message;
 using DatingApp.Dtos.Review;
 using DatingApp.Dtos.Report;
 using DatingApp.Dtos.Image;
+using DatingApp.Dtos.Match;
 
 namespace DatingApp.Mapper
 {
@@ -59,6 +60,12 @@ namespace DatingApp.Mapper
                  .ForMember(dest => dest.ImageData, opt => opt.MapFrom(src =>
                      src.ImageData != null ? Convert.ToBase64String(src.ImageData) : null));
 
+            CreateMap<Match, MatchDto>()
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
+                .ForMember(x => x.UserId, y => y.MapFrom(z => z.UserId))
+                .ForMember(x => x.MatchedUserId, y => y.MapFrom(z => z.MatchedUserId))
+                .ForMember(x => x.IsMutual, y => y.MapFrom(z => z.IsMutual))
+                .ForMember(x => x.CreatedAt, y => y.MapFrom(z => z.CreatedAt));
         }
     }
 }
