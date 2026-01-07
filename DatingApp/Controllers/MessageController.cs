@@ -95,7 +95,10 @@ namespace DatingApp.Controllers
         {
             var senderId = _authorizationHelperService.GetCurrentUserId(HttpContext);
 
-            var response = await _messageService.GetPaginatedMessagesBetWeen2UsersAsync(senderId, recipientId, request);
+            request.SenderId = senderId;
+            request.RecipientId = recipientId;
+
+            var response = await _messageService.GetPaginatedMessagesBetWeen2UsersAsync(request);
 
             return Ok(response);
         }

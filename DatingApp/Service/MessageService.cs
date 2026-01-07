@@ -105,29 +105,26 @@ namespace DatingApp.Service
             return _mapper.Map<IEnumerable<MessageDto>>(messagesBetweenUsers);
         }
 
-        public async Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(int senderId,
-            long recipientId, GetPaginatedMessagesBetween2UsersRequest request)
+public async Task<PagedResponse<MessageDto>> GetPaginatedMessagesBetWeen2UsersAsync(GetPaginatedMessagesBetween2UsersRequest request)
         {
-            {
-                _logger.LogTrace("Get paginated msg called");
+            _logger.LogTrace("Get paginated msg called");
 
-                _requestValidator.Validate(request);
+            _requestValidator.Validate(request);
 
-                var (messages, totalCount) =
-                    await _unitOfWork.MessageRepository.GetPaginatedMessagesBetweenTwoUsersAsync(
-                        senderId,
-                        recipientId,
+            var (messages, totalCount) =
+                await _unitOfWork.MessageRepository.GetPaginatedMessagesBetweenTwoUsersAsync(
+                    request.SenderId,
+                    request.RecipientId,
                         request.PageNumber,
                         request.PageSize);
 
                 var messageDtos = _mapper.Map<List<MessageDto>>(messages);
 
-                return new PagedResponse<MessageDto>(
-                    messageDtos
-                    , totalCount
-                    , request.PageNumber
-                    , request.PageSize);
-            }
+            return new PagedResponse<MessageDto>(
+                messageDtos
+                , totalCount
+                , request.PageNumber
+                , request.PageSize);
         }
 
         public async Task<IEnumerable<UserDto>> GetUsersWithMessagesAsync(GetUsersWithMessagesRequest request)
