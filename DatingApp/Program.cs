@@ -135,6 +135,7 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<JwtOptions>>().Value);
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IRegisterSimpleService, RegisterSimpleService>();
 
 // -------------------- Helper Services --------------------
 builder.Services.AddScoped<IPasswordHasherService, PasswordHelperService>();
@@ -146,6 +147,7 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 
 // -------------------- Repositories / Persistence --------------------
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -156,6 +158,7 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IUserLanguageRepository, UserLanguageRepository>();
 builder.Services.AddScoped<IUserInterestRepository, UserInterestRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
 // -------------------- AutoMapper --------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

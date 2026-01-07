@@ -17,6 +17,7 @@ namespace DatingApp.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<UserLanguage> UserLanguages { get; set; }
         public DbSet<UserInterest> UserInterests { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

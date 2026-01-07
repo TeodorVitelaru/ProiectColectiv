@@ -80,6 +80,7 @@ namespace DatingApp.Controllers
 
         /// <summary>
         /// Asynchronously registers a new user with complete profile for provided <paramref name="request"/>.
+        /// Returns JWT token for immediate authentication.
         /// </summary>
         [HttpPost("register")]
         [AllowAnonymous]
@@ -87,13 +88,13 @@ namespace DatingApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDto>> RegisterUserAsync([FromForm] RegisterUserRequest request)
+        public async Task<ActionResult<DatingApp.Dtos.User.Login.TokenDto>> RegisterUserAsync([FromForm] RegisterUserRequest request)
         {
             _logger.LogTrace("Register user called");
 
-            UserDto response = await _userService.RegisterUserAsync(request);
+            DatingApp.Dtos.User.Login.TokenDto token = await _userService.RegisterUserWithTokenAsync(request);
 
-            return response;
+            return token;
         }
 
         /// <summary>

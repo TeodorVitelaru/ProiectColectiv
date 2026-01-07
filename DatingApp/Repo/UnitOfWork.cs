@@ -25,6 +25,7 @@ namespace DatingApp.Repo
             ImageRepository = new ImageRepository(context);
             UserLanguageRepository = new UserLanguageRepository(context);
             UserInterestRepository = new UserInterestRepository(context);
+            MatchRepository = new MatchRepository(context);
         }
 
         public IUserRepository UserRepository { get; }
@@ -40,6 +41,8 @@ namespace DatingApp.Repo
         public IUserLanguageRepository UserLanguageRepository { get; }
 
         public IUserInterestRepository UserInterestRepository { get; }
+
+        public IMatchRepository MatchRepository { get; }
 
         public async Task BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadUncommitted)
         {

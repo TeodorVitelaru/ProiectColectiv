@@ -31,6 +31,13 @@ namespace DatingApp.Contracts.Services
         Task<UserDto> RegisterUserAsync(RegisterUserRequest request);
 
         /// <summary>
+        /// Asynchronously registers a new user and returns JWT token for authentication.
+        /// </summary>
+        /// <param name="request">Registration request with complete profile.</param>
+        /// <returns>JWT Token</returns>
+        Task<DatingApp.Dtos.User.Login.TokenDto> RegisterUserWithTokenAsync(RegisterUserRequest request);
+
+        /// <summary>
         /// Asynchronously edits the <see cref="UserDto"/> object based on provided <paramref name="request"/>.
         /// If <see cref="UserDto"/> is not found, throws <see cref="NotFoundException"/>
         /// </summary>

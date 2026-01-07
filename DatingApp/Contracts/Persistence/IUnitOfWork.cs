@@ -18,6 +18,8 @@ namespace DatingApp.Contracts.Persistence
 
         IUserInterestRepository UserInterestRepository { get; }
 
+        IMatchRepository MatchRepository { get; }
+
         /// <summary>
         /// Saves the changes to database asynchronously.
         /// </summary>
