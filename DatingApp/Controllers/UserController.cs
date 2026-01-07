@@ -155,6 +155,29 @@ namespace DatingApp.Controllers
         }
 
         /// <summary>
+        /// Asynchronously gets the current user's profile.
+        /// </summary>
+        [HttpGet("me")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> GetCurrentUserAsync()
+        {
+            _logger.LogTrace("Get current user profile called");
+
+            var currentUserId = _authorizationHelperService.GetCurrentUserId(HttpContext);
+            if (currentUserId <= 0)
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            UserDto response = await _userService.GetUserAsync(new GetUserRequest { Id = currentUserId });
+
+            return response;
+        }
+
+        /// <summary>
         /// Asynchronously sets up user profile with all information including photos.
         /// </summary>
         [HttpPut("{userId}/setup-profile")]

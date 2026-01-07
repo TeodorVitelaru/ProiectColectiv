@@ -7,8 +7,9 @@
     {
         Straight = 0,
         Gay = 1,
-        Bisexual = 2,
-        Other = 3
+        Lesbian = 2,
+        Bisexual = 3,
+        Other = 4
     }
 }
 

@@ -52,49 +52,47 @@ namespace DatingApp.Service
                 throw new InvalidOperationException("Users cannot match with themselves.");
             }
 
-            // Check if match already exists
+            // Check if current user already liked this person (direct match: userId -> matchedUserId)
             var existingMatch = await _unitOfWork.MatchRepository.FindByUserIdsAsync(userId, request.MatchedUserId);
             if (existingMatch is not null)
             {
-                // If one-way match exists and other user has also liked, mark as mutual
+                // User already liked this person
+                if (existingMatch.UserId == userId)
+                {
+                    throw new InvalidOperationException("You already liked this user.");
+                }
+                
+                // This means the other user liked us first, now we're liking back
+                // Mark the existing match as mutual and create our own match record
                 if (!existingMatch.IsMutual)
                 {
                     existingMatch.MarkAsMutual();
                     _unitOfWork.MatchRepository.Update(existingMatch);
-                    await _unitOfWork.SaveChangesAsync();
-
-                    return new MatchResponse
-                    {
-                        Id = existingMatch.Id,
-                        IsMutual = true,
-                        Message = "Mutual match!"
-                    };
                 }
+                
+                // Create the reverse match also marked as mutual
+                var mutualMatch = Match.Create(userId, request.MatchedUserId, true);
+                _unitOfWork.MatchRepository.Add(mutualMatch);
+                await _unitOfWork.SaveChangesAsync();
 
-                throw new InvalidOperationException("Match already exists between these users.");
+                return new MatchResponse
+                {
+                    Id = mutualMatch.Id,
+                    IsMutual = true,
+                    Message = "Mutual match!"
+                };
             }
 
-            // Create new match
+            // Create new one-way match (we liked them, they haven't liked us yet)
             var match = Match.Create(userId, request.MatchedUserId, false);
-
-            // Check if the other user has already liked this user
-            var reverseMatch = await _unitOfWork.MatchRepository.FindByUserIdsAsync(request.MatchedUserId, userId);
-            if (reverseMatch is not null)
-            {
-                // Mark both as mutual
-                match.MarkAsMutual();
-                reverseMatch.MarkAsMutual();
-                _unitOfWork.MatchRepository.Update(reverseMatch);
-            }
-
             _unitOfWork.MatchRepository.Add(match);
             await _unitOfWork.SaveChangesAsync();
 
             return new MatchResponse
             {
                 Id = match.Id,
-                IsMutual = match.IsMutual,
-                Message = match.IsMutual ? "Mutual match!" : "Like sent successfully."
+                IsMutual = false,
+                Message = "Like sent successfully."
             };
         }
 
@@ -212,6 +210,53 @@ namespace DatingApp.Service
             _unitOfWork.MatchRepository.Remove(match);
             await _unitOfWork.SaveChangesAsync();
             return true;
+        }
+
+        /// <summary>
+        /// Adds a dislike record for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user creating the dislike.</param>
+        /// <param name="dislikedUserId">The ID of the user being disliked.</param>
+        /// <returns>Response indicating the dislike was recorded.</returns>
+        public async Task<MatchResponse> AddDislikeAsync(long userId, long dislikedUserId)
+        {
+            // Validate users
+            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            if (user is null)
+            {
+                throw new ArgumentException("Current user not found.", nameof(userId));
+            }
+
+            var dislikedUser = await _unitOfWork.UserRepository.GetByIdAsync(dislikedUserId);
+            if (dislikedUser is null)
+            {
+                throw new ArgumentException("User to dislike not found.", nameof(dislikedUserId));
+            }
+
+            // Prevent self-disliking
+            if (userId == dislikedUserId)
+            {
+                throw new InvalidOperationException("Users cannot dislike themselves.");
+            }
+
+            // Check if already disliked
+            var existingMatch = await _unitOfWork.MatchRepository.FindByUserIdsAsync(userId, dislikedUserId);
+            if (existingMatch is not null && existingMatch.UserId == userId)
+            {
+                throw new InvalidOperationException("You already interacted with this user.");
+            }
+
+            // Create dislike record
+            var dislike = Match.Create(userId, dislikedUserId, isMutual: false, isLiked: false);
+            _unitOfWork.MatchRepository.Add(dislike);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new MatchResponse
+            {
+                Id = dislike.Id,
+                IsMutual = false,
+                Message = "Dislike recorded."
+            };
         }
 
         /// <summary>

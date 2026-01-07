@@ -159,6 +159,40 @@ namespace DatingApp.Controllers
         }
 
         /// <summary>
+        /// Adds a dislike for a user (swipe left).
+        /// </summary>
+        [HttpPost("dislike/{dislikedUserId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<MatchResponse>> AddDislikeAsync(long dislikedUserId)
+        {
+            _logger.LogTrace("Add dislike called for user {DislikedUserId}", dislikedUserId);
+
+            var userId = _authorizationHelperService.GetCurrentUserId(HttpContext);
+            if (userId <= 0)
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+            try
+            {
+                var response = await _matchService.AddDislikeAsync(userId, dislikedUserId);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning("Invalid argument: {Message}", ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning("Invalid operation: {Message}", ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Gets a random unmatched user for the current user (for swiping).
         /// </summary>
         [HttpGet("random-unmatched")]

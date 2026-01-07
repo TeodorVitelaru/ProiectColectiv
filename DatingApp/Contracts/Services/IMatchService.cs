@@ -53,6 +53,14 @@ namespace DatingApp.Contracts.Services
         Task<bool> DeleteMatchAsync(long matchId);
 
         /// <summary>
+        /// Adds a dislike record for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user creating the dislike.</param>
+        /// <param name="dislikedUserId">The ID of the user being disliked.</param>
+        /// <returns>Response indicating the dislike was recorded.</returns>
+        Task<MatchResponse> AddDislikeAsync(long userId, long dislikedUserId);
+
+        /// <summary>
         /// Gets random unmatched users for a specific user.
         /// </summary>
         /// <param name="userId">The current user ID.</param>

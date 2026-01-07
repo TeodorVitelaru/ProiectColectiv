@@ -29,9 +29,11 @@ namespace DatingApp.Repo
         public async Task<IEnumerable<Match>> GetUserMatchesAsync(long userId)
         {
             return await _context.Matches
-                .Where(m => m.UserId == userId || m.MatchedUserId == userId)
+                .Where(m => (m.UserId == userId || m.MatchedUserId == userId) && m.IsLiked)
                 .Include(m => m.User)
+                    .ThenInclude(u => u.Images)
                 .Include(m => m.MatchedUser)
+                    .ThenInclude(mu => mu.Images)
                 .OrderByDescending(m => m.CreatedAt)
                 .ToListAsync();
         }
@@ -44,9 +46,10 @@ namespace DatingApp.Repo
         public async Task<IEnumerable<Match>> GetMutualMatchesAsync(long userId)
         {
             return await _context.Matches
-                .Where(m => (m.UserId == userId || m.MatchedUserId == userId) && m.IsMutual)
+                .Where(m => m.UserId == userId && m.IsMutual)
                 .Include(m => m.User)
                 .Include(m => m.MatchedUser)
+                    .ThenInclude(mu => mu.Images)
                 .OrderByDescending(m => m.CreatedAt)
                 .ToListAsync();
         }
@@ -107,22 +110,66 @@ namespace DatingApp.Repo
 
         /// <summary>
         /// Gets unmatched random users for a specific user.
+        /// Filters based on current user's sexual orientation and gender preferences.
         /// </summary>
         /// <param name="userId">The current user ID.</param>
         /// <param name="count">Number of random users to return.</param>
         /// <returns>Collection of random unmatched users.</returns>
         public async Task<IEnumerable<User>> GetRandomUnmatchedUsersAsync(long userId, int count = 1)
         {
-            var matchedUserIds = await _context.Matches
-                .Where(m => m.UserId == userId || m.MatchedUserId == userId)
-                .Select(m => m.UserId == userId ? m.MatchedUserId : m.UserId)
+            // Get current user with their preferences
+            var currentUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (currentUser == null)
+            {
+                return Enumerable.Empty<User>();
+            }
+
+            // Get all users that the current user has already liked or disliked
+            var excludedUserIds = await _context.Matches
+                .Where(m => m.UserId == userId)
+                .Select(m => m.MatchedUserId)
                 .ToListAsync();
 
-            matchedUserIds.Add(userId); // Exclude self
+            excludedUserIds.Add(userId); // Exclude self
 
-            return await _context.Users
+            // Build query with gender filtering based on sexual orientation
+            var query = _context.Users
                 .Include(u => u.Images)
-                .Where(u => !matchedUserIds.Contains(u.Id))
+                .Where(u => !excludedUserIds.Contains(u.Id));
+
+            // Apply gender filtering based on sexual orientation
+            if (currentUser.SexualOrientation == Enums.SexualOrientation.Straight)
+            {
+                // Straight: show opposite gender only
+                if (currentUser.Gender == Enums.Gender.Male)
+                {
+                    query = query.Where(u => u.Gender == Enums.Gender.Female);
+                }
+                else if (currentUser.Gender == Enums.Gender.Female)
+                {
+                    query = query.Where(u => u.Gender == Enums.Gender.Male);
+                }
+            }
+            else if (currentUser.SexualOrientation == Enums.SexualOrientation.Gay)
+            {
+                // Gay men: show males only
+                query = query.Where(u => u.Gender == Enums.Gender.Male);
+            }
+            else if (currentUser.SexualOrientation == Enums.SexualOrientation.Lesbian)
+            {
+                // Lesbian women: show females only
+                query = query.Where(u => u.Gender == Enums.Gender.Female);
+            }
+            else if (currentUser.SexualOrientation == Enums.SexualOrientation.Bisexual)
+            {
+                // Bisexual: show both males and females
+                query = query.Where(u => u.Gender == Enums.Gender.Male || u.Gender == Enums.Gender.Female);
+            }
+            // For "Other" orientation, show all users (no gender filter)
+
+            return await query
                 .OrderBy(u => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync();
