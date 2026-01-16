@@ -2,7 +2,9 @@ using DatingApp.Contracts.Persistence;
 using DatingApp.Contracts.Services;
 using DatingApp.Domain.Entities;
 using DatingApp.Dtos.Match;
+using DatingApp.Hubs;
 using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DatingApp.Service
 {
@@ -13,16 +15,19 @@ namespace DatingApp.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MatchService"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="mapper">The AutoMapper instance.</param>
-        public MatchService(IUnitOfWork unitOfWork, IMapper mapper)
+        /// <param name="hubContext">The SignalR hub context for notifications.</param>
+        public MatchService(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<NotificationHub> hubContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         /// <summary>
@@ -75,11 +80,51 @@ namespace DatingApp.Service
                 _unitOfWork.MatchRepository.Add(mutualMatch);
                 await _unitOfWork.SaveChangesAsync();
 
+                // Get matched user's images for response
+                var matchedUserImages = await _unitOfWork.ImageRepository.GetImagesByUserIdAsync(request.MatchedUserId);
+                var firstImage = matchedUserImages.FirstOrDefault();
+
+                // Get current user's images
+                var currentUserImages = await _unitOfWork.ImageRepository.GetImagesByUserIdAsync(userId);
+                var currentUserFirstImage = currentUserImages.FirstOrDefault();
+
+                var matchedUserInfo = new MatchedUserInfo
+                {
+                    Id = matchedUser.Id,
+                    FirstName = matchedUser.FirstName,
+                    LastName = matchedUser.LastName,
+                    ProfilePhotoUrl = firstImage != null
+                        ? Convert.ToBase64String(firstImage.ImageData)
+                        : null
+                };
+
+                var currentUserInfo = new MatchedUserInfo
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ProfilePhotoUrl = currentUserFirstImage != null
+                        ? Convert.ToBase64String(currentUserFirstImage.ImageData)
+                        : null
+                };
+
+                // Send SignalR notification to the matched user (the one who liked first)
+                var matchedUserConnectionId = NotificationHub.GetConnectionId(request.MatchedUserId);
+                if (matchedUserConnectionId != null)
+                {
+                    await _hubContext.Clients.Client(matchedUserConnectionId).SendAsync("ReceiveMatchNotification", new
+                    {
+                        isMutual = true,
+                        matchedUser = currentUserInfo
+                    });
+                }
+
                 return new MatchResponse
                 {
                     Id = mutualMatch.Id,
                     IsMutual = true,
-                    Message = "Mutual match!"
+                    Message = "Mutual match!",
+                    MatchedUser = matchedUserInfo
                 };
             }
 

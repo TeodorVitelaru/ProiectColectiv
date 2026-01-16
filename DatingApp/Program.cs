@@ -4,6 +4,7 @@ using DatingApp.Contracts.Services.HelperService;
 using DatingApp.Contracts.Validators;
 using DatingApp.Data;
 using DatingApp.Dtos.User.Login;
+using DatingApp.Hubs;
 using DatingApp.Middlewares;
 using DatingApp.Repo;
 using DatingApp.Service;
@@ -37,9 +38,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(corsPolicy, policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:4200") // Angular dev server
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials(); // Required for SignalR
     });
 });
 
@@ -116,6 +118,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
             ClockSkew = TimeSpan.Zero
         };
+
+        // Allow SignalR to authenticate via query string
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -163,6 +182,9 @@ builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 // -------------------- AutoMapper --------------------
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+// -------------------- SignalR --------------------
+builder.Services.AddSignalR();
+
 // -------------------- Build App --------------------
 var app = builder.Build();
 
@@ -189,6 +211,7 @@ app.UseMiddleware<ApplicationExceptionHandler>();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 // -------------------- Apply Migrations Automatically --------------------
 //using (var scope = app.Services.CreateScope())

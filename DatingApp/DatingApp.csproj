@@ -22,6 +22,7 @@
 		<!-- JWT Authentication -->
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.9" />
 
 		<!-- EF Core -->
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />

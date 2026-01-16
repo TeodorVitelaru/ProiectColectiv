@@ -1,4 +1,4 @@
-﻿﻿﻿using AutoMapper;
+﻿﻿﻿﻿using AutoMapper;
 using DatingApp.Domain.Entities;
 using DatingApp.Dtos.User;
 using DatingApp.Dtos.Message;
@@ -39,7 +39,8 @@ namespace DatingApp.Mapper
                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                .ForMember(x => x.SenderId, y => y.MapFrom(z => z.SenderId))
                .ForMember(x => x.RecipientId, y => y.MapFrom(z => z.RecipientId))
-               .ForMember(x => x.Text, y => y.MapFrom(z => z.Text));
+               .ForMember(x => x.Text, y => y.MapFrom(z => z.Text))
+               .ForMember(x => x.Timestamp, y => y.MapFrom(z => z.SentAt));
 
             CreateMap<Review, ReviewDto>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
